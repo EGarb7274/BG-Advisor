@@ -1,0 +1,68 @@
+[
+  {
+    "name": "Murloc Flood",
+    "tier": 3,
+    "tribes": ["Murloc"],
+    "key_minions": ["Murloc Warleader", "Toxfin", "Old Murk-Eye", "Tidecaller"]
+  },
+  {
+    "name": "Mech Divine Shield",
+    "tier": 3,
+    "tribes": ["Mech"],
+    "key_minions": ["Deflecto Bot", "Kangor's Apprentice", "Zilliax Deluxe"]
+  },
+  {
+    "name": "Dragon Scaling",
+    "tier": 3,
+    "tribes": ["Dragon"],
+    "key_minions": ["Murozond", "Kalecgos", "Nadina the Red"]
+  },
+  {
+    "name": "Mech-Pirate Menace",
+    "tier": 3,
+    "tribes": ["Mech", "Pirate"],
+    "key_minions": ["Navigator", "Salty Looter", "Deflecto Bot"]
+  },
+  {
+    "name": "Pirate Aggro",
+    "tier": 2,
+    "tribes": ["Pirate"],
+    "key_minions": ["Peggy Brittlebone", "Yohoho", "Soulsplitter"]
+  },
+  {
+    "name": "Elemental Tavern",
+    "tier": 2,
+    "tribes": ["Elemental"],
+    "key_minions": ["Nomi Kitchen Nightmare", "Lil Rag", "Tavern Tempest"]
+  },
+  {
+    "name": "Quillboar Gems",
+    "tier": 2,
+    "tribes": ["Quillboar"],
+    "key_minions": ["Aggem Thorncurse", "Bristleback Knight", "Roadboar"]
+  },
+  {
+    "name": "Undead Value",
+    "tier": 2,
+    "tribes": ["Undead"],
+    "key_minions": ["Titus Rivendare", "Baron Rivendare", "Recurring Nightmare"]
+  },
+  {
+    "name": "Naga Spell Synergy",
+    "tier": 2,
+    "tribes": ["Naga"],
+    "key_minions": ["Viper", "Tarecgosa", "Coilfang Constrictor"]
+  },
+  {
+    "name": "Beast Buddy",
+    "tier": 2,
+    "tribes": ["Beast"],
+    "key_minions": ["Mama Bear", "Pack Leader", "Bannerboar"]
+  },
+  {
+    "name": "Demon Warlock",
+    "tier": 2,
+    "tribes": ["Demon"],
+    "key_minions": ["Wrath Weaver", "Soul Juggler", "Mal'Ganis"]
+  }
+]
