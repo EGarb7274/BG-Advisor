@@ -5,9 +5,9 @@
     "tribes": ["Demon"],
     "key_minions": ["Malchezaar, Prince of Dance", "Ashen Corruptor", "Consummate Conqueror", "Twisted Wrathguard", "Brann Bronzebeard"],
     "addon_cards": ["Battlemaster", "Charlga", "Taunt givers"],
-    "enablers": ["Malchezaar, Prince of Dance", "Ashen Corruptor"],
-    "when_to_commit": "Commit when you find Malchezaar + Ashen Corruptor or Consummate Conqueror early. The earlier the better — every turn of buffing compounds.",
-    "how_to_play": "Buff minions in the shop using Malchezaar and Ashen Corruptor to generate massive stats. Twisted Wrathguard is your primary damage dealer — protect it with taunts. Brann doubles the shop buff effects. Aim to scale one or two minions to absurd attack values and protect them."
+    "enablers": "Brann Bronzebeard Demon midgame ( Woodland Defiler Woodland Defiler )",
+    "when_to_commit": "Buffed Shop ( Shadowdancer Shadowdancer ) + Ashen Corruptor + Brann Bronzebeard",
+    "how_to_play": "Scale your shop somehow, usually it's through Shadowdancer Shadowdancer , Felemental Felemental , or Consummate Conqueror Consummate Conqueror . Then, add fodders to your shop to capture the buffed minions in shop. Typically you have an economy setup with Brann Bronzebeard Brann Bronzebeard + damage rewinder ( Ashen Corruptor Ashen Corruptor ) which allows you to cycle a lot of cards. Every card you cycle will add a lot of fodders to eat because of Twisted Wrathguard Twisted Wrathguard . There's another line where you can add fodders to your shop using Rylak Metalhead Rylak Metalhead + Laboratory Assistant Laboratory Assistant ."
   },
   {
     "name": "Undead - Attack Scaling",
@@ -15,9 +15,9 @@
     "tribes": ["Undead"],
     "key_minions": ["Handless Forsaken", "Drustfallen Butcher", "Friendly Geist", "Balinda Stonehearth"],
     "addon_cards": ["Monstrous Macaw", "Titus Rivendare", "Bound Lingerer"],
-    "enablers": ["Handless Forsaken", "Drustfallen Butcher"],
-    "when_to_commit": "Commit when you have Handless Forsaken + Drustfallen Butcher. More deaths equals more attack — get in early to maximize scaling turns.",
-    "how_to_play": "Handless Forsaken gains attack each time a friendly Undead dies. Drustfallen Butcher has reborn, guaranteeing a death trigger every combat. Friendly Geist also dies and re-triggers. Stack as many death triggers as possible per fight. Balinda gives your minions divine shield to survive long enough to snowball."
+    "enablers": "Deathly Striker Friendly Geist",
+    "when_to_commit": "Attack Scaling ( Drustfallen Butcher Drustfallen Butcher ) + summons ( Handless Forsaken Handless Forsaken )",
+    "how_to_play": "Scale the attack of your Undeads and summons with the Butchering spell from Drustfallen Butcher Drustfallen Butcher . Butchering doubles it's effect when paired with Balinda Stonehearth Balinda Stonehearth , and also improves with spell scaling from Friendly Geist Friendly Geist or Tranquil Meditative Tranquil Meditative . Your quality of summons come from Handless Forsaken Handless Forsaken , but also could use Deathly Striker Deathly Striker or Eternal Summoner Eternal Summoner . Be sure to reborn as many key undeads as possible, starting with Handless Forsaken Handless Forsaken . Using Disguised Graverobber Disguised Graverobber on Mummifier Mummifier also gives permanent reborns."
   },
   {
     "name": "Back to Back",
@@ -25,9 +25,9 @@
     "tribes": ["Neutral"],
     "key_minions": ["Drakkari Enchanter", "Felfire Conjurer", "Cataclysmic Harbinger", "Balinda Stonehearth"],
     "addon_cards": ["Warden of Old", "Any end-of-turn effect minion"],
-    "enablers": ["Drakkari Enchanter"],
-    "when_to_commit": "Commit when you find Drakkari Enchanter paired with Felfire Conjurer or Cataclysmic Harbinger. Without Drakkari the comp is mediocre.",
-    "how_to_play": "Drakkari Enchanter doubles end-of-turn effects. Felfire Conjurer and Cataclysmic Harbinger both trigger at end of turn, so Drakkari fires them twice every round. Balinda gives divine shields to protect your scaling minions. Stack more end-of-turn minions to compound the effect — each one benefits from the doubling."
+    "enablers": "Cataclysmic Harbinger Drakkari Enchanter",
+    "when_to_commit": "Back to Back generation ( Cataclysmic Harbinger Cataclysmic Harbinger ) + spell power ( Felfire Conjurer Felfire Conjurer ) + Drakkari Enchanter Drakkari Enchanter",
+    "how_to_play": "Scale spell power with Felfire Conjurer Felfire Conjurer + Drakkari Enchanter Drakkari Enchanter to make your Back to Back (Tavern Spell) bigger. Then, use Balinda Stonehearth Balinda Stonehearth to double the scaling and effectiveness of your back to backs. Cataclysmic Harbinger Cataclysmic Harbinger allows you to print multiple of them every turn. Scale premium units such as Sinrunner Blanchy Sinrunner Blanchy ."
   },
   {
     "name": "Pirates - Bounty APM",

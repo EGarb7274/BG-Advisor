@@ -4,9 +4,8 @@ from PyQt6.QtWidgets import (
     QApplication, QWidget, QVBoxLayout, QHBoxLayout, QGridLayout,
     QLabel, QPushButton, QFrame, QScrollArea,
 )
-from PyQt6.QtCore import Qt, QPoint
+from PyQt6.QtCore import Qt, QPoint, QRect, pyqtSignal
 from PyQt6.QtGui import QFont, QColor
-from PyQt6.QtCore import pyqtSignal
 
 logger = logging.getLogger(__name__)
 
@@ -312,11 +311,30 @@ class ErrorBanner(QLabel):
 
 # ── Main Overlay Window ────────────────────────────────────────────────────────
 
+_RESIZE_MARGIN = 8
+
+_EDGE_CURSORS = {
+    'tl': Qt.CursorShape.SizeFDiagCursor,
+    'br': Qt.CursorShape.SizeFDiagCursor,
+    'tr': Qt.CursorShape.SizeBDiagCursor,
+    'bl': Qt.CursorShape.SizeBDiagCursor,
+    'l':  Qt.CursorShape.SizeHorCursor,
+    'r':  Qt.CursorShape.SizeHorCursor,
+    't':  Qt.CursorShape.SizeVerCursor,
+    'b':  Qt.CursorShape.SizeVerCursor,
+}
+
+
 class BgOverlay(QWidget):
     def __init__(self, config: dict):
         super().__init__()
         self._config = config
+        self._dragging = False
         self._drag_pos = QPoint()
+        self._resizing = False
+        self._resize_edge: str | None = None
+        self._resize_start_global = QPoint()
+        self._resize_start_geom: QRect | None = None
         self._setup_window()
         self._build_ui()
 
@@ -328,10 +346,34 @@ class BgOverlay(QWidget):
         )
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
         self.setWindowOpacity(self._config.get("opacity", 0.88))
-        self.setMinimumWidth(280)
+        self.setMinimumSize(240, 300)
         self.resize(285, 580)
         screen = QApplication.primaryScreen().geometry()
         self.move(screen.width() - 305, 100)
+
+    def _get_edge(self, pos: QPoint) -> str | None:
+        x, y, w, h, m = pos.x(), pos.y(), self.width(), self.height(), _RESIZE_MARGIN
+        left, right, top, bottom = x < m, x > w - m, y < m, y > h - m
+        if top and left:    return 'tl'
+        if top and right:   return 'tr'
+        if bottom and left: return 'bl'
+        if bottom and right: return 'br'
+        if left:   return 'l'
+        if right:  return 'r'
+        if top:    return 't'
+        if bottom: return 'b'
+        return None
+
+    def _do_resize(self, gpos: QPoint):
+        delta = gpos - self._resize_start_global
+        g = self._resize_start_geom
+        new_geom = QRect(g)
+        e = self._resize_edge
+        if 'r' in e: new_geom.setRight(g.right() + delta.x())
+        if 'l' in e: new_geom.setLeft(g.left() + delta.x())
+        if 'b' in e: new_geom.setBottom(g.bottom() + delta.y())
+        if 't' in e: new_geom.setTop(g.top() + delta.y())
+        self.setGeometry(new_geom)  # Qt enforces minimumSize automatically
 
     def _build_ui(self):
         container = QFrame(self)
@@ -420,11 +462,33 @@ class BgOverlay(QWidget):
 
     def mousePressEvent(self, event):
         if event.button() == Qt.MouseButton.LeftButton:
-            self._drag_pos = event.globalPosition().toPoint() - self.frameGeometry().topLeft()
+            pos = event.position().toPoint()
+            edge = self._get_edge(pos)
+            if edge:
+                self._resizing = True
+                self._resize_edge = edge
+                self._resize_start_global = event.globalPosition().toPoint()
+                self._resize_start_geom = self.geometry()
+            else:
+                self._dragging = True
+                self._drag_pos = event.globalPosition().toPoint() - self.frameGeometry().topLeft()
 
     def mouseMoveEvent(self, event):
-        if event.buttons() == Qt.MouseButton.LeftButton and self._drag_pos:
-            self.move(event.globalPosition().toPoint() - self._drag_pos)
+        gpos = event.globalPosition().toPoint()
+        if self._resizing and event.buttons() == Qt.MouseButton.LeftButton:
+            self._do_resize(gpos)
+        elif self._dragging and event.buttons() == Qt.MouseButton.LeftButton:
+            self.move(gpos - self._drag_pos)
+        else:
+            edge = self._get_edge(event.position().toPoint())
+            self.setCursor(_EDGE_CURSORS.get(edge, Qt.CursorShape.ArrowCursor))
+
+    def mouseReleaseEvent(self, event):
+        self._resizing = False
+        self._dragging = False
+        self._resize_edge = None
+        self._drag_pos = QPoint()
+        self.setCursor(Qt.CursorShape.ArrowCursor)
 
     def toggle_visibility(self):
         self.setVisible(not self.isVisible())
