@@ -138,44 +138,114 @@ class TribePanel(QFrame):
 
 TIER_COLORS = {1: "#7a7a7a", 2: "#4a9aff", 3: COLOR_GOLD}
 
+
+def _detail_section(label: str, items: list[str] | str) -> QFrame:
+    """A labelled section row used inside the expanded comp detail."""
+    frame = QFrame()
+    frame.setStyleSheet("QFrame { background: transparent; }")
+    layout = QVBoxLayout(frame)
+    layout.setContentsMargins(0, 4, 0, 0)
+    layout.setSpacing(2)
+    lbl = QLabel(label.upper())
+    lbl.setStyleSheet(
+        f"color: {COLOR_GOLD}; font-family: 'Segoe UI', sans-serif;"
+        f"font-size: 9px; font-weight: bold; letter-spacing: 1px; background: transparent;"
+    )
+    layout.addWidget(lbl)
+    text = ", ".join(items) if isinstance(items, list) else items
+    body = QLabel(text)
+    body.setStyleSheet(
+        f"color: {COLOR_BODY}; font-family: 'Segoe UI', sans-serif;"
+        f"font-size: 10px; background: transparent;"
+    )
+    body.setWordWrap(True)
+    layout.addWidget(body)
+    return frame
+
+
 class CompCard(QFrame):
     def __init__(self, comp: dict, parent=None):
         super().__init__(parent)
+        self._expanded = False
+        self.setCursor(Qt.CursorShape.PointingHandCursor)
         self.setStyleSheet(
             f"QFrame {{ background: {BG_CARD}; border-radius: 5px;"
             f"  border: 1px solid #2a1e10; margin: 1px; }}"
         )
-        layout = QVBoxLayout(self)
-        layout.setContentsMargins(10, 7, 10, 7)
-        layout.setSpacing(3)
 
+        root = QVBoxLayout(self)
+        root.setContentsMargins(10, 8, 10, 8)
+        root.setSpacing(0)
+
+        # ── Header row (always visible) ──
         tier = comp.get("tier", 1)
         star_color = TIER_COLORS.get(tier, COLOR_GOLD)
         stars = "★" * tier + "☆" * (3 - tier)
 
         header_row = QHBoxLayout()
-        star_label = QLabel(stars)
-        star_label.setStyleSheet(
-            f"color: {star_color}; font-size: 11px; letter-spacing: 1px;"
-        )
-        name_label = QLabel(comp["name"])
-        name_label.setStyleSheet(
-            f"color: #e8d8c0; font-family: 'Palatino Linotype', Georgia, serif;"
-            f"font-size: 13px; font-weight: bold;"
-        )
-        header_row.addWidget(star_label)
-        header_row.addSpacing(6)
-        header_row.addWidget(name_label)
-        header_row.addStretch()
-        layout.addLayout(header_row)
+        header_row.setSpacing(6)
 
-        detail = QLabel(f"Key: {', '.join(comp.get('key_minions', []))}")
-        detail.setStyleSheet(
-            f"color: {COLOR_DIM}; font-size: 10px;"
-            f"font-family: 'Segoe UI', sans-serif;"
+        star_lbl = QLabel(stars)
+        star_lbl.setStyleSheet(
+            f"color: {star_color}; font-size: 11px; letter-spacing: 1px; background: transparent;"
         )
-        detail.setWordWrap(True)
-        layout.addWidget(detail)
+        name_lbl = QLabel(comp["name"])
+        name_lbl.setStyleSheet(
+            f"color: #e8d8c0; font-family: 'Palatino Linotype', Georgia, serif;"
+            f"font-size: 13px; font-weight: bold; background: transparent;"
+        )
+        self._arrow = QLabel("▶")
+        self._arrow.setStyleSheet(
+            f"color: {COLOR_MUTED}; font-size: 9px; background: transparent;"
+        )
+
+        header_row.addWidget(star_lbl)
+        header_row.addWidget(name_lbl)
+        header_row.addStretch()
+        header_row.addWidget(self._arrow)
+        root.addLayout(header_row)
+
+        # ── Collapsed summary ──
+        summary_text = ", ".join(comp.get("key_minions", [])[:3])
+        if len(comp.get("key_minions", [])) > 3:
+            summary_text += "…"
+        self._summary = QLabel(summary_text)
+        self._summary.setStyleSheet(
+            f"color: {COLOR_DIM}; font-size: 10px;"
+            f"font-family: 'Segoe UI', sans-serif; background: transparent;"
+        )
+        self._summary.setWordWrap(True)
+        root.addWidget(self._summary)
+
+        # ── Expanded detail panel (hidden by default) ──
+        self._detail = QFrame()
+        self._detail.setStyleSheet(
+            f"QFrame {{ background: transparent; border-top: 1px solid #3a2c1a; }}"
+        )
+        detail_layout = QVBoxLayout(self._detail)
+        detail_layout.setContentsMargins(0, 6, 0, 2)
+        detail_layout.setSpacing(0)
+
+        if comp.get("key_minions"):
+            detail_layout.addWidget(_detail_section("Key Minions", comp["key_minions"]))
+        if comp.get("enablers"):
+            detail_layout.addWidget(_detail_section("Enablers", comp["enablers"]))
+        if comp.get("addon_cards"):
+            detail_layout.addWidget(_detail_section("Addon Cards", comp["addon_cards"]))
+        if comp.get("when_to_commit"):
+            detail_layout.addWidget(_detail_section("When to Commit", comp["when_to_commit"]))
+        if comp.get("how_to_play"):
+            detail_layout.addWidget(_detail_section("How to Play", comp["how_to_play"]))
+
+        self._detail.hide()
+        root.addWidget(self._detail)
+
+    def mousePressEvent(self, event):
+        if event.button() == Qt.MouseButton.LeftButton:
+            self._expanded = not self._expanded
+            self._detail.setVisible(self._expanded)
+            self._summary.setVisible(not self._expanded)
+            self._arrow.setText("▼" if self._expanded else "▶")
 
 
 # ── Comp List ──────────────────────────────────────────────────────────────────

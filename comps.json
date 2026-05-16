@@ -3,126 +3,210 @@
     "name": "Demons - Shop Buff",
     "tier": 3,
     "tribes": ["Demon"],
-    "key_minions": ["Malchezaar, Prince of Dance", "Ashen Corruptor", "Consummate Conqueror", "Twisted Wrathguard", "Brann Bronzebeard"]
+    "key_minions": ["Malchezaar, Prince of Dance", "Ashen Corruptor", "Consummate Conqueror", "Twisted Wrathguard", "Brann Bronzebeard"],
+    "addon_cards": ["Battlemaster", "Charlga", "Taunt givers"],
+    "enablers": ["Malchezaar, Prince of Dance", "Ashen Corruptor"],
+    "when_to_commit": "Commit when you find Malchezaar + Ashen Corruptor or Consummate Conqueror early. The earlier the better — every turn of buffing compounds.",
+    "how_to_play": "Buff minions in the shop using Malchezaar and Ashen Corruptor to generate massive stats. Twisted Wrathguard is your primary damage dealer — protect it with taunts. Brann doubles the shop buff effects. Aim to scale one or two minions to absurd attack values and protect them."
   },
   {
     "name": "Undead - Attack Scaling",
     "tier": 2,
     "tribes": ["Undead"],
-    "key_minions": ["Handless Forsaken", "Drustfallen Butcher", "Friendly Geist", "Balinda Stonehearth"]
+    "key_minions": ["Handless Forsaken", "Drustfallen Butcher", "Friendly Geist", "Balinda Stonehearth"],
+    "addon_cards": ["Monstrous Macaw", "Titus Rivendare", "Bound Lingerer"],
+    "enablers": ["Handless Forsaken", "Drustfallen Butcher"],
+    "when_to_commit": "Commit when you have Handless Forsaken + Drustfallen Butcher. More deaths equals more attack — get in early to maximize scaling turns.",
+    "how_to_play": "Handless Forsaken gains attack each time a friendly Undead dies. Drustfallen Butcher has reborn, guaranteeing a death trigger every combat. Friendly Geist also dies and re-triggers. Stack as many death triggers as possible per fight. Balinda gives your minions divine shield to survive long enough to snowball."
   },
   {
     "name": "Back to Back",
     "tier": 2,
     "tribes": ["Neutral"],
-    "key_minions": ["Drakkari Enchanter", "Felfire Conjurer", "Cataclysmic Harbinger", "Balinda Stonehearth"]
+    "key_minions": ["Drakkari Enchanter", "Felfire Conjurer", "Cataclysmic Harbinger", "Balinda Stonehearth"],
+    "addon_cards": ["Warden of Old", "Any end-of-turn effect minion"],
+    "enablers": ["Drakkari Enchanter"],
+    "when_to_commit": "Commit when you find Drakkari Enchanter paired with Felfire Conjurer or Cataclysmic Harbinger. Without Drakkari the comp is mediocre.",
+    "how_to_play": "Drakkari Enchanter doubles end-of-turn effects. Felfire Conjurer and Cataclysmic Harbinger both trigger at end of turn, so Drakkari fires them twice every round. Balinda gives divine shields to protect your scaling minions. Stack more end-of-turn minions to compound the effect — each one benefits from the doubling."
   },
   {
     "name": "Pirates - Bounty APM",
     "tier": 2,
     "tribes": ["Pirate"],
-    "key_minions": ["Sky Admiral Rogers", "Proud Privateer", "Brazen Buccaneer", "Brann Bronzebeard"]
+    "key_minions": ["Sky Admiral Rogers", "Proud Privateer", "Brazen Buccaneer", "Brann Bronzebeard"],
+    "addon_cards": ["Dread Admiral Eliza", "Salty Looter", "Southsea Captain"],
+    "enablers": ["Sky Admiral Rogers (hero power)", "Brann Bronzebeard"],
+    "when_to_commit": "Commit when playing as Sky Admiral Rogers, or when you have Brann + Proud Privateer discovered early. Hero power makes this comp significantly stronger.",
+    "how_to_play": "Use Sky Admiral Rogers' hero power to cycle through the shop and discover Pirates cheaply. Proud Privateer and Brazen Buccaneer accumulate bounty each time you play a Pirate. Brann doubles battlecry discovers. The goal is to play as many Pirates per turn as possible to stack bounty charges, then cash in for massive stat swings."
   },
   {
     "name": "Nagas - Groundbreaker",
     "tier": 2,
     "tribes": ["Naga"],
-    "key_minions": ["Groundbreaker", "Darkcrest Strategist", "Seafloor Recruiter", "Brann Bronzebeard"]
+    "key_minions": ["Groundbreaker", "Darkcrest Strategist", "Seafloor Recruiter", "Brann Bronzebeard"],
+    "addon_cards": ["Coilfang Constrictor", "Crabby", "Tidestone of Golganneth"],
+    "enablers": ["Groundbreaker", "Brann Bronzebeard"],
+    "when_to_commit": "Commit when you find Groundbreaker early with a reliable spell engine. Without consistent spell generation Groundbreaker won't scale fast enough.",
+    "how_to_play": "Groundbreaker gains +2/+2 each time you cast a spell during your turn. Darkcrest Strategist and Seafloor Recruiter generate and reduce the cost of spells. Brann doubles the Groundbreaker buff per spell. Stack spell generators and cast as many as possible each shop phase to ramp Groundbreaker into an unstoppable threat."
   },
   {
     "name": "Elementals - Shop Buff",
     "tier": 2,
     "tribes": ["Elemental"],
-    "key_minions": ["Living Azerite", "Leyline Surfacer", "Balinda Stonehearth", "Brann Bronzebeard"]
+    "key_minions": ["Living Azerite", "Leyline Surfacer", "Balinda Stonehearth", "Brann Bronzebeard"],
+    "addon_cards": ["Nomi, Kitchen Nightmare", "Gentle Djinni", "Al'Akir the Windlord"],
+    "enablers": ["Living Azerite", "Leyline Surfacer"],
+    "when_to_commit": "Commit when you find Living Azerite + Leyline Surfacer together. The loop requires both — one without the other is underwhelming.",
+    "how_to_play": "Living Azerite buffs all Elementals in your shop each turn. Leyline Surfacer moves those shop buffs onto your board Elementals. Repeat every turn to indefinitely scale your whole board. Brann doubles Leyline's transfer effect. Balinda protects your scaled minions with divine shields. Prioritize freezing a buffed shop when Leyline is ready."
   },
   {
     "name": "Dragons - Spells",
     "tier": 2,
     "tribes": ["Dragon"],
-    "key_minions": ["Persistent Poet", "Nightbane, Ignited", "Fire-forged Evoker", "Sky Admiral Rogers"]
+    "key_minions": ["Persistent Poet", "Nightbane, Ignited", "Fire-forged Evoker", "Sky Admiral Rogers"],
+    "addon_cards": ["Kalegos, Arcane Aspect", "Draconic Warden", "Waxrider Togwaggle"],
+    "enablers": ["Persistent Poet"],
+    "when_to_commit": "Commit when you find Persistent Poet with at least one spell generator. Nightbane and Kalegos accelerate the comp significantly once spells are flowing.",
+    "how_to_play": "Cast spells during your shop phase to buff Persistent Poet and Nightbane, Ignited. Fire-forged Evoker makes spells cheaper, enabling more casts per turn. Persistent Poet also discovers spells, creating a self-feeding loop. Build a board of Dragons that scale through spellcasting — prioritize spell cost reduction to maximize casts each turn."
   },
   {
     "name": "Mechs - Automaton",
     "tier": 2,
     "tribes": ["Mech"],
-    "key_minions": ["Auto Assembler", "Kangor's Apprentice", "Ancestral Automaton"]
+    "key_minions": ["Auto Assembler", "Kangor's Apprentice", "Ancestral Automaton"],
+    "addon_cards": ["Deflect-o-Bot", "Meteodrill Beetle", "Scallywag"],
+    "enablers": ["Kangor's Apprentice", "Ancestral Automaton"],
+    "when_to_commit": "Commit when you find Ancestral Automaton or Kangor's Apprentice early. The comp compounds with each death, so more combats equals more value.",
+    "how_to_play": "Ancestral Automaton copies itself on death, generating a permanent board presence. Kangor's Apprentice resurrects two mechs with divine shield and taunt each time one dies. Auto Assembler builds a mech from parts. The goal is to flood the board with resurrecting mechs that protect each other, making it extremely difficult for opponents to clear your board."
   },
   {
     "name": "Beasts - Leviathan",
     "tier": 2,
     "tribes": ["Beast"],
-    "key_minions": ["Banana Slamma", "Lurking Leniathan", "Sewer Lord"]
+    "key_minions": ["Banana Slamma", "Lurking Leviathan", "Sewer Lord"],
+    "addon_cards": ["Mama Bear", "The Rat King", "Monstrous Macaw"],
+    "enablers": ["Lurking Leviathan"],
+    "when_to_commit": "Commit when you find Lurking Leviathan. It scales passively with every Beast summon so every turn you hold it is free value.",
+    "how_to_play": "Lurking Leviathan gains +1/+1 each time you summon a Beast. Sewer Lord continuously spawns rat tokens during the shop phase, passively stacking Leviathan. Banana Slamma buffs random Beasts. Stack Beast-generating minions to ramp Leviathan as high as possible before your board is set — it often becomes your primary win condition at 100+ stats."
   },
   {
     "name": "Beasts - Summons",
     "tier": 2,
     "tribes": ["Beast"],
-    "key_minions": ["Titus Rivendare", "Sewer Lord", "Goldrinn, The Great Wolf", "Monstrous Macaw"]
+    "key_minions": ["Titus Rivendare", "Sewer Lord", "Goldrinn, The Great Wolf", "Monstrous Macaw"],
+    "addon_cards": ["Mama Bear", "Kathrena Winterwisp", "Mounted Raptor"],
+    "enablers": ["Titus Rivendare", "Monstrous Macaw"],
+    "when_to_commit": "Commit when you find Titus Rivendare + Goldrinn or Sewer Lord. Titus is the key piece — the comp is average without it.",
+    "how_to_play": "Titus Rivendare doubles death rattle triggers. Goldrinn, The Great Wolf gives all Beasts +5 attack when it dies — doubled by Titus that's +10. Sewer Lord spawns rats constantly. Monstrous Macaw repeats the last attack effect, chaining Goldrinn buffs. Build a board where one Goldrinn death buffs your entire Beast army by catastrophic amounts."
   },
   {
-    "name": "Merlocks - Venom Scam",
+    "name": "Murlocs - Venom Scam",
     "tier": 2,
-    "tribes": ["Merloc"],
-    "key_minions": ["Leeroy the Reckless", "Diremuck Forager", "Bile Spitter"]
+    "tribes": ["Murloc"],
+    "key_minions": ["Leeroy the Reckless", "Diremuck Forager", "Bile Spitter"],
+    "addon_cards": ["Old Murk-Eye", "Murloc Warleader", "Primalfin Lookout"],
+    "enablers": ["Bile Spitter", "Leeroy the Reckless"],
+    "when_to_commit": "Commit when you have Bile Spitter + a divine shield source. Without divine shield protection, your poisonous minions die before dealing damage.",
+    "how_to_play": "Bile Spitter gives a friendly Murloc Poisonous. Diremuck Forager provides divine shield to protect your poisonous attacker. Leeroy the Reckless provides a big body that survives hits before the poisonous trigger lands. One poisonous hit kills anything, so your goal is to keep your poisonous minion alive long enough to delete the enemy's strongest threats."
   },
   {
-    "name": "Merlocks - APM",
+    "name": "Murlocs - APM",
     "tier": 2,
-    "tribes": ["Merloc"],
-    "key_minions": ["Magicfin Mycologist", "Primitive Painter", "Expert Avaiator", "Brann Bronzebeard"]
+    "tribes": ["Murloc"],
+    "key_minions": ["Magicfin Mycologist", "Primitive Painter", "Expert Aviator", "Brann Bronzebeard"],
+    "addon_cards": ["Murloc Warleader", "Old Murk-Eye", "Toxfin"],
+    "enablers": ["Brann Bronzebeard", "Magicfin Mycologist"],
+    "when_to_commit": "Commit when you find Magicfin Mycologist + Primitive Painter. Brann doubles discover effects making this comp extremely powerful.",
+    "how_to_play": "Magicfin Mycologist summons a random Murloc when you play a Murloc, chaining summons together. Primitive Painter buffs all Murlocs in your hand and board. Brann Bronzebeard doubles battlecry summons and discovers. Expert Aviator provides additional tempo. The goal is to snowball a massive board of buffed Murlocs through rapid cycling and buff stacking."
   },
   {
-    "name": "Nagas - Combat Scaling/Spell Buff",
+    "name": "Nagas - Combat Scaling",
     "tier": 2,
     "tribes": ["Naga"],
-    "key_minions": ["Titus Rivendare", "Rylak Metalhead", "Tranquil Meditative", "Maelstrom Emergent", "Ruthless Queensguard"]
+    "key_minions": ["Titus Rivendare", "Rylak Metalhead", "Tranquil Meditative", "Maelstrom Emergent", "Ruthless Queensguard"],
+    "addon_cards": ["Coilfang Constrictor", "Brann Bronzebeard", "Crabby"],
+    "enablers": ["Ruthless Queensguard", "Titus Rivendare"],
+    "when_to_commit": "Commit when you find Ruthless Queensguard + Maelstrom Emergent. Titus is a massive upgrade — prioritize finding it once the core is established.",
+    "how_to_play": "Ruthless Queensguard gains +1 attack each time she attacks — this compounds rapidly in a long combat. Maelstrom Emergent gives adjacent Nagas +2 attack when they attack, doubling the scaling. Titus Rivendare doubles attack triggers so Queensguard scales twice as fast. Rylak Metalhead gains stats when divine shields pop. Position Queensguard to attack as early as possible in combat."
   },
   {
     "name": "Dragons - Shiny Ring",
     "tier": 2,
     "tribes": ["Dragon"],
-    "key_minions": ["Titus Rivendare", "Persistent Poet", "Felfire Conjurer", "Twilight Broodmother", "Ring Bearer", "Maelstrom Emergent"]
+    "key_minions": ["Titus Rivendare", "Persistent Poet", "Felfire Conjurer", "Twilight Broodmother", "Ring Bearer", "Maelstrom Emergent"],
+    "addon_cards": ["Kalegos, Arcane Aspect", "Sky Admiral Rogers", "Fire-forged Evoker"],
+    "enablers": ["Ring Bearer", "Titus Rivendare"],
+    "when_to_commit": "Commit when you find Ring Bearer + Persistent Poet + Titus Rivendare together. All three are required for the comp to reach its ceiling.",
+    "how_to_play": "Ring Bearer gains +2/+2 each time you cast a spell. Persistent Poet generates spells and discovers more. Felfire Conjurer and Twilight Broodmother add more spell triggers. Titus Rivendare doubles Ring Bearer's death rattle so it comes back bigger. The goal is to cast as many spells per turn as possible to scale Ring Bearer into a massive threat that resurrects itself."
   },
   {
     "name": "Quilboar - Darkgaze",
     "tier": 1,
-    "tribes": ["Quilboar"],
-    "key_minions": ["Darkgaze Elder", "Prickly Piper", "Brann Bronzebeard"]
+    "tribes": ["Quillboar"],
+    "key_minions": ["Darkgaze Elder", "Prickly Piper", "Brann Bronzebeard"],
+    "addon_cards": ["Bristlebach", "Charlga", "Fungal Enchanter"],
+    "enablers": ["Darkgaze Elder", "Brann Bronzebeard"],
+    "when_to_commit": "Commit when you find Darkgaze Elder early. Every blood gem generated becomes worth more with Darkgaze, so earlier is always better.",
+    "how_to_play": "Darkgaze Elder buffs all blood gems by +1/+1, so each gem now gives +2/+2 instead of +1/+1. Prickly Piper distributes blood gems to multiple minions at once, scaling your whole board simultaneously. Brann doubles gem generation from battlecries. Stack gem generators and use Prickly Piper to spread amplified gems across all your minions each turn."
   },
   {
     "name": "Quilboar - Smuggler",
     "tier": 1,
-    "tribes": ["Quilboar"],
-    "key_minions": ["Gem Smuggler", "Titus Rivendare", "Moon-bacon Jazzer", "Prickly Piper", "Rylak Metalhead", "Brann Bronzebeard", "Monstrous Macaw"]
+    "tribes": ["Quillboar"],
+    "key_minions": ["Gem Smuggler", "Titus Rivendare", "Moon-bacon Jazzer", "Prickly Piper", "Rylak Metalhead", "Brann Bronzebeard", "Monstrous Macaw"],
+    "addon_cards": ["Darkgaze Elder", "Charlga", "Bristlebach"],
+    "enablers": ["Gem Smuggler", "Titus Rivendare"],
+    "when_to_commit": "Commit when you find Gem Smuggler + Titus Rivendare. Without Titus the gem generation is too slow to compete at higher MMR.",
+    "how_to_play": "Gem Smuggler discovers a blood gem each time you play a Quilboar. Titus Rivendare doubles this — two gems per Quilboar played. Moon-bacon Jazzer applies gems to random Quilboar when you play a gem. Prickly Piper spreads gems to all friendly minions. Chain Quilboar plays each turn to generate a flood of gems and buff your entire board simultaneously."
   },
   {
     "name": "Quilboar - Combat Scaling",
     "tier": 1,
-    "tribes": ["Quilboar"],
-    "key_minions": ["Bristlebach", "Prickly Piper", "Three Lil' Quilboar", "Redtusk Thronraiser"]
+    "tribes": ["Quillboar"],
+    "key_minions": ["Bristlebach", "Prickly Piper", "Three Lil' Quilboar", "Redtusk Thronraiser"],
+    "addon_cards": ["Darkgaze Elder", "Brann Bronzebeard", "Charlga"],
+    "enablers": ["Bristlebach", "Prickly Piper"],
+    "when_to_commit": "Commit when you have Bristlebach + Prickly Piper. The comp is slow to start but snowballs hard once gems are flowing every combat.",
+    "how_to_play": "Bristlebach generates a blood gem each time it attacks, providing a passive gem source during combat. Prickly Piper applies each gem to all friendly minions instead of one, turning a single gem into a board-wide buff. Three Lil' Quilboar provides burst stats. Redtusk Thronraiser enables additional attack triggers. Stack Bristlebachs if possible and use Prickly Piper to amplify every gem generated."
   },
   {
     "name": "Undead - Overflow",
     "tier": 1,
     "tribes": ["Undead"],
-    "key_minions": ["Leeroy the Reckless", "Diremuck Forager", "Bile Spitter"]
+    "key_minions": ["Leeroy the Reckless", "Diremuck Forager", "Bile Spitter"],
+    "addon_cards": ["Monstrous Macaw", "Titus Rivendare", "Handless Forsaken"],
+    "enablers": ["Leeroy the Reckless", "Bile Spitter"],
+    "when_to_commit": "Commit when you have Leeroy + Bile Spitter. Leeroy must hit the enemy face to proc his overflow, so position him at the front.",
+    "how_to_play": "Leeroy the Reckless deals overflow damage to the hero when he attacks and kills a minion. Bile Spitter gives a friendly minion Poisonous to ensure one-shots. Diremuck Forager provides divine shield protection. The combo: Leeroy with Poisonous one-shots anything he touches and the overflow damage hits the enemy hero directly, enabling kill potential even from losing board states."
   },
   {
-    "name": "Merlocks - Venom Scam",
+    "name": "Murlocs - Reborn Loop",
     "tier": 1,
-    "tribes": ["Merlock"],
-    "key_minions": ["Titus Rivendare", "Cadaver Caretaker", "Catacomb Crasher", "Monstrous Macaw"]
+    "tribes": ["Murloc"],
+    "key_minions": ["Titus Rivendare", "Cadaver Caretaker", "Catacomb Crasher", "Monstrous Macaw"],
+    "addon_cards": ["Handless Forsaken", "Drustfallen Butcher", "Friendly Geist"],
+    "enablers": ["Titus Rivendare", "Monstrous Macaw"],
+    "when_to_commit": "Commit when you find Titus Rivendare + Monstrous Macaw with reborn minions available. The loop requires both doubling and repetition effects.",
+    "how_to_play": "Titus Rivendare doubles death rattle triggers on Cadaver Caretaker and Catacomb Crasher. Monstrous Macaw repeats the last friendly minion's attack effect, chaining reborn triggers. The result is a recursive loop of deaths and re-summons that builds a persistent board. Position reborn minions in front to absorb attacks and trigger the loop as early in combat as possible."
   },
   {
     "name": "Dragons - Battlecries",
     "tier": 1,
     "tribes": ["Dragon"],
-    "key_minions": ["Nightbane, Ignited", "Draconic Warden", "Brann Bronzebeard", "Kalegos, Arcane Aspect"]
+    "key_minions": ["Nightbane, Ignited", "Draconic Warden", "Brann Bronzebeard", "Kalegos, Arcane Aspect"],
+    "addon_cards": ["Persistent Poet", "Fire-forged Evoker", "Waxrider Togwaggle"],
+    "enablers": ["Brann Bronzebeard"],
+    "when_to_commit": "Commit when you find Brann Bronzebeard with Dragon battlecry synergies available. Brann is the entire engine — without it the comp is just a generic Dragon board.",
+    "how_to_play": "Brann Bronzebeard doubles all battlecry effects. Nightbane, Ignited gains stats from battlecries. Draconic Warden gains +2/+2 each time you play a battlecry Dragon — doubled by Brann. Kalegos, Arcane Aspect scales based on spell damage generated. Play a battlecry Dragon every turn to compound Draconic Warden's growth and build toward a massive Dragon board."
   },
   {
     "name": "Beasts - RDU",
     "tier": 1,
     "tribes": ["Beast"],
-    "key_minions": ["Rylak Metalhead", "Rabid Panther", "Hunting Tiger Shark", "Monstrous Macaw"]
+    "key_minions": ["Rylak Metalhead", "Rabid Panther", "Hunting Tiger Shark", "Monstrous Macaw"],
+    "addon_cards": ["Mama Bear", "The Rat King", "Leaping Lurker"],
+    "enablers": ["Monstrous Macaw", "Rylak Metalhead"],
+    "when_to_commit": "Commit when you find Rylak Metalhead + Hunting Tiger Shark. Monstrous Macaw dramatically increases the ceiling — prioritize it once your core is in place.",
+    "how_to_play": "Rylak Metalhead gains +2/+2 whenever a friendly minion loses divine shield. Rabid Panther gains +3 attack when another Beast attacks. Hunting Tiger Shark gains +2/+2 when any Beast attacks. Monstrous Macaw repeats the last attack effect, chaining Hunting Tiger Shark and Rabid Panther triggers. Give Rylak divine shield via the shop and watch it scale off enemy attacks while your Beasts compound each other's growth."
   }
 ]
