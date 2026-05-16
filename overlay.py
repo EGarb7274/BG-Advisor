@@ -4,8 +4,8 @@ from PyQt6.QtWidgets import (
     QApplication, QWidget, QVBoxLayout, QHBoxLayout, QGridLayout,
     QLabel, QPushButton, QFrame, QScrollArea,
 )
-from PyQt6.QtCore import Qt, QPoint, QRect, pyqtSignal
-from PyQt6.QtGui import QFont, QColor
+from PyQt6.QtCore import Qt, QPoint, QRect, QThread, pyqtSignal
+from PyQt6.QtGui import QFont, QColor, QPixmap, QCursor
 
 logger = logging.getLogger(__name__)
 
@@ -138,27 +138,273 @@ class TribePanel(QFrame):
 TIER_COLORS = {1: "#7a7a7a", 2: "#4a9aff", 3: COLOR_GOLD}
 
 
-def _detail_section(label: str, items: list[str] | str) -> QFrame:
+# ── Card popup ─────────────────────────────────────────────────────────────────
+
+_active_popup: 'CardPopup | None' = None
+
+
+def _show_card_popup(card_name: str, global_pos: QPoint) -> None:
+    global _active_popup
+    if _active_popup is not None:
+        try:
+            _active_popup.close()
+        except RuntimeError:
+            pass
+    _active_popup = CardPopup(card_name)
+    _active_popup.position_near(global_pos)
+    _active_popup.show()
+
+
+class _CardFetcher(QThread):
+    card_ready = pyqtSignal(dict)
+    not_found = pyqtSignal()
+
+    def __init__(self, name: str):
+        super().__init__()
+        self._name = name
+
+    def run(self):
+        from api import fetch_card
+        card = fetch_card(self._name)
+        if card:
+            self.card_ready.emit(card)
+        else:
+            self.not_found.emit()
+
+
+class _ImageFetcher(QThread):
+    image_ready = pyqtSignal(bytes)
+
+    def __init__(self, path: str):
+        super().__init__()
+        self._path = path
+
+    def run(self):
+        from api import fetch_image_bytes
+        data = fetch_image_bytes(self._path)
+        if data:
+            self.image_ready.emit(data)
+
+
+class CardPopup(QWidget):
+    def __init__(self, card_name: str, parent=None):
+        super().__init__(parent)
+        self.setWindowFlags(
+            Qt.WindowType.FramelessWindowHint
+            | Qt.WindowType.WindowStaysOnTopHint
+            | Qt.WindowType.Tool
+        )
+        self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
+        self.setFixedWidth(230)
+        self._fetcher: _CardFetcher | None = None
+        self._img_fetcher: _ImageFetcher | None = None
+        self._build_shell(card_name)
+        self._start_fetch(card_name)
+
+    def _build_shell(self, name: str):
+        outer = QVBoxLayout(self)
+        outer.setContentsMargins(0, 0, 0, 0)
+
+        self._container = QFrame()
+        self._container.setStyleSheet(
+            f"QFrame {{ background: {BG_HEADER}; border-radius: 8px;"
+            f"  border: 1px solid #3a2c1a; }}"
+        )
+        root = QVBoxLayout(self._container)
+        root.setContentsMargins(0, 0, 0, 8)
+        root.setSpacing(0)
+
+        # Header row
+        hdr = QFrame()
+        hdr.setStyleSheet(
+            f"QFrame {{ background: rgba(28, 20, 10, 250); border-radius: 8px 8px 0 0;"
+            f"  border-bottom: 1px solid {COLOR_DIVIDER}; }}"
+        )
+        hdr_layout = QHBoxLayout(hdr)
+        hdr_layout.setContentsMargins(10, 6, 6, 6)
+        self._name_lbl = QLabel(name)
+        self._name_lbl.setStyleSheet(
+            f"color: #e8d8c0; font-family: 'Palatino Linotype', Georgia, serif;"
+            f"font-size: 12px; font-weight: bold; background: transparent;"
+        )
+        close_btn = QPushButton("×")
+        close_btn.setFixedSize(20, 20)
+        close_btn.setStyleSheet(
+            f"QPushButton {{ background: transparent; color: {COLOR_DIM};"
+            f"  font-size: 15px; font-weight: bold; border: none; }}"
+            f"QPushButton:hover {{ color: #ffaaaa; }}"
+        )
+        close_btn.clicked.connect(self.close)
+        hdr_layout.addWidget(self._name_lbl)
+        hdr_layout.addStretch()
+        hdr_layout.addWidget(close_btn)
+        root.addWidget(hdr)
+
+        # Image area
+        self._img_lbl = QLabel("Loading…")
+        self._img_lbl.setFixedHeight(60)
+        self._img_lbl.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self._img_lbl.setStyleSheet(
+            f"color: {COLOR_MUTED}; font-size: 10px;"
+            f"background: rgba(10, 7, 4, 140); border: none;"
+        )
+        root.addWidget(self._img_lbl)
+
+        # Stats + text body
+        self._body = QFrame()
+        self._body.setStyleSheet("QFrame { background: transparent; }")
+        self._body_layout = QVBoxLayout(self._body)
+        self._body_layout.setContentsMargins(10, 6, 10, 0)
+        self._body_layout.setSpacing(4)
+        root.addWidget(self._body)
+
+        outer.addWidget(self._container)
+
+    def _start_fetch(self, name: str):
+        self._fetcher = _CardFetcher(name)
+        self._fetcher.card_ready.connect(self._populate)
+        self._fetcher.not_found.connect(self._show_not_found)
+        self._fetcher.start()
+
+    def _clear_body(self):
+        while self._body_layout.count():
+            item = self._body_layout.takeAt(0)
+            if item.widget():
+                item.widget().deleteLater()
+            elif item.layout():
+                # clear sub-layout
+                while item.layout().count():
+                    sub = item.layout().takeAt(0)
+                    if sub.widget():
+                        sub.widget().deleteLater()
+
+    def _populate(self, card: dict):
+        self._name_lbl.setText(card.get("name", self._name_lbl.text()))
+        self._clear_body()
+
+        tier = card.get("tier", 0)
+        stars = ("★" * tier + "☆" * max(0, 3 - tier)) if tier else ""
+        star_color = {1: "#7a7a7a", 2: "#4a9aff", 3: COLOR_GOLD}.get(tier, COLOR_DIM)
+        tribe = ", ".join(card.get("minionTypes", [])) or "Neutral"
+        atk = card.get("attack", "?")
+        hp = card.get("health", "?")
+
+        meta = QHBoxLayout()
+        star_lbl = QLabel(stars)
+        star_lbl.setStyleSheet(f"color: {star_color}; font-size: 10px; background: transparent;")
+        tribe_lbl = QLabel(tribe)
+        tribe_lbl.setStyleSheet(f"color: {COLOR_DIM}; font-size: 10px; background: transparent;")
+        stats_lbl = QLabel(f"{atk} / {hp}")
+        stats_lbl.setStyleSheet(
+            f"color: {COLOR_BODY}; font-size: 11px; font-weight: bold; background: transparent;"
+        )
+        meta.addWidget(star_lbl)
+        meta.addSpacing(4)
+        meta.addWidget(tribe_lbl)
+        meta.addStretch()
+        meta.addWidget(stats_lbl)
+        self._body_layout.addLayout(meta)
+
+        div = QFrame()
+        div.setFrameShape(QFrame.Shape.HLine)
+        div.setStyleSheet(f"color: {COLOR_DIVIDER};")
+        self._body_layout.addWidget(div)
+
+        text = card.get("text", "").strip()
+        if text:
+            txt_lbl = QLabel(text)
+            txt_lbl.setWordWrap(True)
+            txt_lbl.setStyleSheet(
+                f"color: {COLOR_BODY}; font-family: 'Segoe UI', sans-serif;"
+                f"font-size: 10px; font-style: italic; background: transparent;"
+            )
+            self._body_layout.addWidget(txt_lbl)
+
+        self.adjustSize()
+
+        img_path = card.get("image")
+        if img_path:
+            self._img_fetcher = _ImageFetcher(img_path)
+            self._img_fetcher.image_ready.connect(self._set_image)
+            self._img_fetcher.start()
+
+    def _set_image(self, data: bytes):
+        px = QPixmap()
+        if px.loadFromData(data):
+            px = px.scaledToWidth(228, Qt.TransformationMode.SmoothTransformation)
+            self._img_lbl.setFixedHeight(px.height())
+            self._img_lbl.setPixmap(px)
+            self._img_lbl.setText("")
+        self.adjustSize()
+
+    def _show_not_found(self):
+        self._clear_body()
+        lbl = QLabel("Card not found in API")
+        lbl.setStyleSheet(f"color: {COLOR_MUTED}; font-size: 10px; background: transparent;")
+        self._body_layout.addWidget(lbl)
+        self._img_lbl.setText("—")
+        self.adjustSize()
+
+    def position_near(self, global_pos: QPoint):
+        screen = QApplication.primaryScreen().geometry()
+        x = global_pos.x() + 14
+        y = global_pos.y() - 20
+        if x + self.width() > screen.right():
+            x = global_pos.x() - self.width() - 14
+        y = max(screen.top(), min(y, screen.bottom() - self.height()))
+        self.move(x, y)
+
+
+# ── Card name chip (clickable) ──────────────────────────────────────────────────
+
+class CardChip(QPushButton):
+    def __init__(self, name: str, parent=None):
+        super().__init__(name, parent)
+        self.setCursor(Qt.CursorShape.PointingHandCursor)
+        self.setStyleSheet(
+            f"QPushButton {{ background: transparent; color: {COLOR_BODY};"
+            f"  font-family: 'Segoe UI', sans-serif; font-size: 10px;"
+            f"  border: none; padding: 1px 0; text-align: left; }}"
+            f"QPushButton:hover {{ color: {COLOR_GOLD}; text-decoration: underline; }}"
+        )
+        self.clicked.connect(self._on_click)
+
+    def _on_click(self):
+        pos = self.mapToGlobal(self.rect().bottomLeft())
+        _show_card_popup(self.text(), pos)
+
+
+# ── Detail section ─────────────────────────────────────────────────────────────
+
+def _detail_section(label: str, items: list[str] | str, clickable: bool = False) -> QFrame:
     """A labelled section row used inside the expanded comp detail."""
     frame = QFrame()
     frame.setStyleSheet("QFrame { background: transparent; }")
     layout = QVBoxLayout(frame)
     layout.setContentsMargins(0, 4, 0, 0)
     layout.setSpacing(2)
+
     lbl = QLabel(label.upper())
     lbl.setStyleSheet(
         f"color: {COLOR_GOLD}; font-family: 'Segoe UI', sans-serif;"
         f"font-size: 9px; font-weight: bold; letter-spacing: 1px; background: transparent;"
     )
     layout.addWidget(lbl)
-    text = ", ".join(items) if isinstance(items, list) else items
-    body = QLabel(text)
-    body.setStyleSheet(
-        f"color: {COLOR_BODY}; font-family: 'Segoe UI', sans-serif;"
-        f"font-size: 10px; background: transparent;"
-    )
-    body.setWordWrap(True)
-    layout.addWidget(body)
+
+    if clickable and isinstance(items, list):
+        for name in items:
+            chip = CardChip(name)
+            layout.addWidget(chip)
+    else:
+        text = ", ".join(items) if isinstance(items, list) else items
+        body = QLabel(text)
+        body.setStyleSheet(
+            f"color: {COLOR_BODY}; font-family: 'Segoe UI', sans-serif;"
+            f"font-size: 10px; background: transparent;"
+        )
+        body.setWordWrap(True)
+        layout.addWidget(body)
+
     return frame
 
 
@@ -226,11 +472,11 @@ class CompCard(QFrame):
         detail_layout.setSpacing(0)
 
         if comp.get("key_minions"):
-            detail_layout.addWidget(_detail_section("Key Minions", comp["key_minions"]))
+            detail_layout.addWidget(_detail_section("Key Minions", comp["key_minions"], clickable=True))
         if comp.get("enablers"):
             detail_layout.addWidget(_detail_section("Enablers", comp["enablers"]))
         if comp.get("addon_cards"):
-            detail_layout.addWidget(_detail_section("Addon Cards", comp["addon_cards"]))
+            detail_layout.addWidget(_detail_section("Addon Cards", comp["addon_cards"], clickable=True))
         if comp.get("when_to_commit"):
             detail_layout.addWidget(_detail_section("When to Commit", comp["when_to_commit"]))
         if comp.get("how_to_play"):
