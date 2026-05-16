@@ -4,7 +4,9 @@ from PyQt6.QtWidgets import (
     QApplication, QWidget, QVBoxLayout, QHBoxLayout, QGridLayout,
     QLabel, QPushButton, QFrame, QScrollArea,
 )
-from PyQt6.QtCore import Qt, QPoint, pyqtSignal
+from PyQt6.QtCore import Qt, QPoint
+from PyQt6.QtGui import QFont, QColor
+from PyQt6.QtCore import pyqtSignal
 
 logger = logging.getLogger(__name__)
 
@@ -13,28 +15,53 @@ ALL_TRIBES = [
     "Elemental", "Pirate", "Naga", "Undead", "Quillboar",
 ]
 
+# ── Palette ────────────────────────────────────────────────────────────────────
+BG_CONTAINER   = "rgba(14, 11, 9, 230)"
+BG_HEADER      = "rgba(22, 16, 9, 245)"
+BG_CHIP_ACTIVE = "#b8821e"
+BG_CHIP_IDLE   = "rgba(38, 30, 20, 220)"
+BG_CARD        = "rgba(28, 22, 14, 190)"
+COLOR_GOLD     = "#c8922a"
+COLOR_DIM      = "#6b5a45"
+COLOR_BODY     = "#b8a898"
+COLOR_MUTED    = "#4a3c2c"
+COLOR_DIVIDER  = "#2e2216"
+COLOR_WARN     = "#e07830"
 
-# ── Tribe Panel ────────────────────────────────────────────────────────────────
+
+# ── Tribe Chip ─────────────────────────────────────────────────────────────────
 
 class TribeChip(QPushButton):
     def __init__(self, name: str, parent=None):
         super().__init__(name, parent)
         self.setCheckable(True)
-        self.toggled.connect(lambda checked: self._apply_style(checked))
+        self.toggled.connect(self._apply_style)
         self._apply_style(False)
 
     def _apply_style(self, active: bool):
         if active:
             self.setStyleSheet(
-                "QPushButton { background: #4a9eff; color: white; border-radius: 4px;"
-                " padding: 4px 8px; font-size: 12px; font-weight: bold; border: none; }"
+                f"QPushButton {{"
+                f"  background: {BG_CHIP_ACTIVE}; color: #fff;"
+                f"  border-radius: 4px; padding: 5px 8px;"
+                f"  font-family: 'Segoe UI Semibold', 'Segoe UI', sans-serif;"
+                f"  font-size: 11px; font-weight: 600; border: 1px solid #d4a030;"
+                f"}}"
+                f"QPushButton:hover {{ background: #c8922a; }}"
             )
         else:
             self.setStyleSheet(
-                "QPushButton { background: #333; color: #777; border-radius: 4px;"
-                " padding: 4px 8px; font-size: 12px; border: none; }"
+                f"QPushButton {{"
+                f"  background: {BG_CHIP_IDLE}; color: {COLOR_DIM};"
+                f"  border-radius: 4px; padding: 5px 8px;"
+                f"  font-family: 'Segoe UI', sans-serif;"
+                f"  font-size: 11px; border: 1px solid #2a1e10;"
+                f"}}"
+                f"QPushButton:hover {{ background: rgba(55, 42, 26, 220); color: {COLOR_BODY}; }}"
             )
 
+
+# ── Tribe Panel ────────────────────────────────────────────────────────────────
 
 class TribePanel(QFrame):
     tribes_changed = pyqtSignal(set)
@@ -48,18 +75,22 @@ class TribePanel(QFrame):
     def _build(self):
         layout = QVBoxLayout(self)
         layout.setContentsMargins(0, 0, 0, 0)
-        layout.setSpacing(4)
+        layout.setSpacing(6)
 
         header = QHBoxLayout()
         title = QLabel("TRIBES")
-        title.setStyleSheet("color: #bbb; font-size: 11px; font-weight: bold; letter-spacing: 1px;")
+        title.setStyleSheet(
+            f"color: {COLOR_GOLD}; font-family: 'Palatino Linotype', Georgia, serif;"
+            f"font-size: 10px; font-weight: bold; letter-spacing: 2px;"
+        )
         header.addWidget(title)
         header.addStretch()
         rescan = QPushButton("↺")
-        rescan.setFixedSize(24, 24)
+        rescan.setFixedSize(22, 22)
         rescan.setStyleSheet(
-            "QPushButton { background: #555; color: #eee; border-radius: 4px; font-size: 14px; border: none; }"
-            "QPushButton:hover { background: #777; }"
+            f"QPushButton {{ background: {COLOR_MUTED}; color: {COLOR_BODY};"
+            f"  border-radius: 4px; font-size: 13px; border: 1px solid #3a2c1a; }}"
+            f"QPushButton:hover {{ background: #3d2e1a; color: {COLOR_GOLD}; }}"
         )
         rescan.clicked.connect(self.rescan_requested.emit)
         header.addWidget(rescan)
@@ -76,7 +107,8 @@ class TribePanel(QFrame):
 
         self._warning_label = QLabel("")
         self._warning_label.setStyleSheet(
-            "QLabel { color: #e07000; font-size: 10px; padding: 2px; }"
+            f"QLabel {{ color: {COLOR_WARN}; font-size: 10px; padding: 2px;"
+            f"  font-family: 'Segoe UI', sans-serif; }}"
         )
         self._warning_label.setWordWrap(True)
         self._warning_label.hide()
@@ -101,29 +133,51 @@ class TribePanel(QFrame):
         self._emit_change()
 
 
-# ── Comp List ──────────────────────────────────────────────────────────────────
+# ── Comp Card ──────────────────────────────────────────────────────────────────
+
+TIER_COLORS = {1: "#7a7a7a", 2: "#4a9aff", 3: COLOR_GOLD}
 
 class CompCard(QFrame):
     def __init__(self, comp: dict, parent=None):
         super().__init__(parent)
         self.setStyleSheet(
-            "QFrame { background: rgba(40, 40, 40, 180); border-radius: 6px; margin: 1px; }"
+            f"QFrame {{ background: {BG_CARD}; border-radius: 5px;"
+            f"  border: 1px solid #2a1e10; margin: 1px; }}"
         )
         layout = QVBoxLayout(self)
-        layout.setContentsMargins(8, 6, 8, 6)
-        layout.setSpacing(2)
+        layout.setContentsMargins(10, 7, 10, 7)
+        layout.setSpacing(3)
 
         tier = comp.get("tier", 1)
+        star_color = TIER_COLORS.get(tier, COLOR_GOLD)
         stars = "★" * tier + "☆" * (3 - tier)
-        header = QLabel(f"{stars}  {comp['name']}")
-        header.setStyleSheet("color: #eee; font-size: 13px; font-weight: bold;")
-        layout.addWidget(header)
+
+        header_row = QHBoxLayout()
+        star_label = QLabel(stars)
+        star_label.setStyleSheet(
+            f"color: {star_color}; font-size: 11px; letter-spacing: 1px;"
+        )
+        name_label = QLabel(comp["name"])
+        name_label.setStyleSheet(
+            f"color: #e8d8c0; font-family: 'Palatino Linotype', Georgia, serif;"
+            f"font-size: 13px; font-weight: bold;"
+        )
+        header_row.addWidget(star_label)
+        header_row.addSpacing(6)
+        header_row.addWidget(name_label)
+        header_row.addStretch()
+        layout.addLayout(header_row)
 
         detail = QLabel(f"Key: {', '.join(comp.get('key_minions', []))}")
-        detail.setStyleSheet("color: #999; font-size: 11px;")
+        detail.setStyleSheet(
+            f"color: {COLOR_DIM}; font-size: 10px;"
+            f"font-family: 'Segoe UI', sans-serif;"
+        )
         detail.setWordWrap(True)
         layout.addWidget(detail)
 
+
+# ── Comp List ──────────────────────────────────────────────────────────────────
 
 class CompList(QFrame):
     def __init__(self, parent=None):
@@ -135,7 +189,10 @@ class CompList(QFrame):
 
     def _show_empty(self, message: str):
         lbl = QLabel(message)
-        lbl.setStyleSheet("color: #555; font-size: 11px;")
+        lbl.setStyleSheet(
+            f"color: {COLOR_MUTED}; font-size: 11px;"
+            f"font-family: 'Segoe UI', sans-serif; padding: 4px;"
+        )
         self._layout.addWidget(lbl)
 
     def update_comps(self, comps: list[dict]):
@@ -148,8 +205,11 @@ class CompList(QFrame):
             self._show_empty("No matching comps")
             return
 
-        title = QLabel("COMPS")
-        title.setStyleSheet("color: #bbb; font-size: 11px; font-weight: bold; letter-spacing: 1px;")
+        title = QLabel("RECOMMENDED COMPS")
+        title.setStyleSheet(
+            f"color: {COLOR_GOLD}; font-family: 'Palatino Linotype', Georgia, serif;"
+            f"font-size: 10px; font-weight: bold; letter-spacing: 2px; padding-bottom: 2px;"
+        )
         self._layout.addWidget(title)
         for comp in comps:
             self._layout.addWidget(CompCard(comp))
@@ -163,8 +223,10 @@ class ErrorBanner(QLabel):
         super().__init__(parent)
         self.setWordWrap(True)
         self.setStyleSheet(
-            "QLabel { background: #7a1a1a; color: #ffcccc; padding: 6px;"
-            " border-radius: 4px; font-size: 11px; }"
+            "QLabel { background: rgba(100, 20, 20, 200); color: #ffb8b8;"
+            " padding: 6px 8px; border-radius: 4px; font-size: 10px;"
+            " font-family: 'Segoe UI', sans-serif;"
+            " border: 1px solid #6a1a1a; }"
         )
         self.hide()
 
@@ -194,45 +256,84 @@ class BgOverlay(QWidget):
             | Qt.WindowType.Tool
         )
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
-        self.setWindowOpacity(self._config.get("opacity", 0.85))
+        self.setWindowOpacity(self._config.get("opacity", 0.88))
         self.setMinimumWidth(280)
-        self.resize(280, 560)
+        self.resize(285, 580)
         screen = QApplication.primaryScreen().geometry()
-        self.move(screen.width() - 300, 100)
+        self.move(screen.width() - 305, 100)
 
     def _build_ui(self):
         container = QFrame(self)
         container.setStyleSheet(
-            "QFrame { background: rgba(20, 20, 20, 210); border-radius: 8px; }"
+            f"QFrame {{ background: {BG_CONTAINER}; border-radius: 8px;"
+            f"  border: 1px solid #2a1e10; }}"
         )
+
         main_layout = QVBoxLayout(container)
-        main_layout.setContentsMargins(10, 10, 10, 10)
-        main_layout.setSpacing(8)
+        main_layout.setContentsMargins(0, 0, 0, 10)
+        main_layout.setSpacing(0)
+
+        # ── Header bar ──
+        header_bar = QFrame()
+        header_bar.setStyleSheet(
+            f"QFrame {{ background: {BG_HEADER}; border-radius: 8px 8px 0 0;"
+            f"  border-bottom: 1px solid {COLOR_DIVIDER}; }}"
+        )
+        header_layout = QHBoxLayout(header_bar)
+        header_layout.setContentsMargins(12, 8, 8, 8)
+
+        title = QLabel("BG ADVISOR")
+        title.setStyleSheet(
+            f"color: {COLOR_GOLD}; font-family: 'Palatino Linotype', Georgia, serif;"
+            f"font-size: 13px; font-weight: bold; letter-spacing: 2px;"
+            f"border: none; background: transparent;"
+        )
+        header_layout.addWidget(title)
+        header_layout.addStretch()
+
+        exit_btn = QPushButton("×")
+        exit_btn.setFixedSize(22, 22)
+        exit_btn.setStyleSheet(
+            f"QPushButton {{ background: transparent; color: {COLOR_DIM};"
+            f"  border-radius: 4px; font-size: 16px; font-weight: bold; border: none; }}"
+            f"QPushButton:hover {{ background: rgba(160, 30, 30, 180); color: #ffaaaa; }}"
+        )
+        exit_btn.clicked.connect(QApplication.instance().quit)
+        header_layout.addWidget(exit_btn)
+        main_layout.addWidget(header_bar)
+
+        # ── Body ──
+        body = QVBoxLayout()
+        body.setContentsMargins(10, 10, 10, 0)
+        body.setSpacing(8)
 
         self._error_banner = ErrorBanner()
-        main_layout.addWidget(self._error_banner)
+        body.addWidget(self._error_banner)
 
         self._tribe_panel = TribePanel()
         self._tribe_panel.tribes_changed.connect(self._on_tribes_changed)
         self._tribe_panel.rescan_requested.connect(self._on_rescan)
-        main_layout.addWidget(self._tribe_panel)
+        body.addWidget(self._tribe_panel)
 
         divider = QFrame()
         divider.setFrameShape(QFrame.Shape.HLine)
-        divider.setStyleSheet("QFrame { color: #444; }")
-        main_layout.addWidget(divider)
+        divider.setStyleSheet(f"QFrame {{ color: {COLOR_DIVIDER}; }}")
+        body.addWidget(divider)
 
         scroll = QScrollArea()
         scroll.setWidgetResizable(True)
         scroll.setStyleSheet(
             "QScrollArea { border: none; background: transparent; }"
-            "QScrollBar:vertical { background: #222; width: 6px; border-radius: 3px; }"
-            "QScrollBar::handle:vertical { background: #555; border-radius: 3px; }"
+            "QScrollBar:vertical { background: rgba(20,14,8,180); width: 5px; border-radius: 2px; }"
+            f"QScrollBar::handle:vertical {{ background: {COLOR_MUTED}; border-radius: 2px; }}"
+            "QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical { height: 0px; }"
         )
         scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         self._comp_list = CompList()
         scroll.setWidget(self._comp_list)
-        main_layout.addWidget(scroll, stretch=1)
+        body.addWidget(scroll, stretch=1)
+
+        main_layout.addLayout(body)
 
         outer = QVBoxLayout(self)
         outer.setContentsMargins(0, 0, 0, 0)
