@@ -8,6 +8,7 @@ logger = logging.getLogger(__name__)
 ALL_TRIBES = [
     "Murloc", "Beast", "Mech", "Demon", "Dragon",
     "Elemental", "Pirate", "Naga", "Undead", "Quillboar",
+    "Neutral",
 ]
 
 FUZZY_THRESHOLD = 0.75
@@ -36,7 +37,7 @@ def run_ocr(img: Image.Image) -> list[str]:
             data = buf.read()
             stream = streams.InMemoryRandomAccessStream()
             writer = streams.DataWriter(stream)
-            writer.write_bytes(list(data))
+            writer.write_bytes(data)
             await writer.store_async()
             stream.seek(0)
             decoder = await imaging.BitmapDecoder.create_async(stream)
