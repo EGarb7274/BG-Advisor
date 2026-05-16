@@ -1,68 +1,128 @@
 [
   {
-    "name": "Murloc Flood",
+    "name": "Demons - Shop Buff",
     "tier": 3,
-    "tribes": ["Murloc"],
-    "key_minions": ["Murloc Warleader", "Toxfin", "Old Murk-Eye", "Tidecaller"]
+    "tribes": ["Demon"],
+    "key_minions": ["Malchezaar, Prince of Dance", "Ashen Corruptor", "Consummate Conqueror", "Twisted Wrathguard", "Brann Bronzebeard"]
   },
   {
-    "name": "Mech Divine Shield",
-    "tier": 3,
-    "tribes": ["Mech"],
-    "key_minions": ["Deflecto Bot", "Kangor's Apprentice", "Zilliax Deluxe"]
-  },
-  {
-    "name": "Dragon Scaling",
-    "tier": 3,
-    "tribes": ["Dragon"],
-    "key_minions": ["Murozond", "Kalecgos", "Nadina the Red"]
-  },
-  {
-    "name": "Mech-Pirate Menace",
-    "tier": 3,
-    "tribes": ["Mech", "Pirate"],
-    "key_minions": ["Navigator", "Salty Looter", "Deflecto Bot"]
-  },
-  {
-    "name": "Pirate Aggro",
-    "tier": 2,
-    "tribes": ["Pirate"],
-    "key_minions": ["Peggy Brittlebone", "Yohoho", "Soulsplitter"]
-  },
-  {
-    "name": "Elemental Tavern",
-    "tier": 2,
-    "tribes": ["Elemental"],
-    "key_minions": ["Nomi Kitchen Nightmare", "Lil Rag", "Tavern Tempest"]
-  },
-  {
-    "name": "Quillboar Gems",
-    "tier": 2,
-    "tribes": ["Quillboar"],
-    "key_minions": ["Aggem Thorncurse", "Bristleback Knight", "Roadboar"]
-  },
-  {
-    "name": "Undead Value",
+    "name": "Undead - Attack Scaling",
     "tier": 2,
     "tribes": ["Undead"],
-    "key_minions": ["Titus Rivendare", "Baron Rivendare", "Recurring Nightmare"]
+    "key_minions": ["Handless Forsaken", "Drustfallen Butcher", "Friendly Geist", "Balinda Stonehearth"]
   },
   {
-    "name": "Naga Spell Synergy",
+    "name": "Back to Back",
+    "tier": 2,
+    "tribes": ["Neutral"],
+    "key_minions": ["Drakkari Enchanter", "Felfire Conjurer", "Cataclysmic Harbinger", "Balinda Stonehearth"]
+  },
+  {
+    "name": "Pirates - Bounty APM",
+    "tier": 2,
+    "tribes": ["Pirate"],
+    "key_minions": ["Sky Admiral Rogers", "Proud Privateer", "Brazen Buccaneer", "Brann Bronzebeard"]
+  },
+  {
+    "name": "Nagas - Groundbreaker",
     "tier": 2,
     "tribes": ["Naga"],
-    "key_minions": ["Viper", "Tarecgosa", "Coilfang Constrictor"]
+    "key_minions": ["Groundbreaker", "Darkcrest Strategist", "Seafloor Recruiter", "Brann Bronzebeard"]
   },
   {
-    "name": "Beast Buddy",
+    "name": "Elementals - Shop Buff",
+    "tier": 2,
+    "tribes": ["Elemental"],
+    "key_minions": ["Living Azerite", "Leyline Surfacer", "Balinda Stonehearth", "Brann Bronzebeard"]
+  },
+  {
+    "name": "Dragons - Spells",
+    "tier": 2,
+    "tribes": ["Dragon"],
+    "key_minions": ["Persistent Poet", "Nightbane, Ignited", "Fire-forged Evoker", "Sky Admiral Rogers"]
+  },
+  {
+    "name": "Mechs - Automaton",
+    "tier": 2,
+    "tribes": ["Mech"],
+    "key_minions": ["Auto Assembler", "Kangor's Apprentice", "Ancestral Automaton"]
+  },
+  {
+    "name": "Beasts - Leviathan",
     "tier": 2,
     "tribes": ["Beast"],
-    "key_minions": ["Mama Bear", "Pack Leader", "Bannerboar"]
+    "key_minions": ["Banana Slamma", "Lurking Leniathan", "Sewer Lord"]
   },
   {
-    "name": "Demon Warlock",
+    "name": "Beasts - Summons",
     "tier": 2,
-    "tribes": ["Demon"],
-    "key_minions": ["Wrath Weaver", "Soul Juggler", "Mal'Ganis"]
+    "tribes": ["Beast"],
+    "key_minions": ["Titus Rivendare", "Sewer Lord", "Goldrinn, The Great Wolf", "Monstrous Macaw"]
+  },
+  {
+    "name": "Merlocks - Venom Scam",
+    "tier": 2,
+    "tribes": ["Merloc"],
+    "key_minions": ["Leeroy the Reckless", "Diremuck Forager", "Bile Spitter"]
+  },
+  {
+    "name": "Merlocks - APM",
+    "tier": 2,
+    "tribes": ["Merloc"],
+    "key_minions": ["Magicfin Mycologist", "Primitive Painter", "Expert Avaiator", "Brann Bronzebeard"]
+  },
+  {
+    "name": "Nagas - Combat Scaling/Spell Buff",
+    "tier": 2,
+    "tribes": ["Naga"],
+    "key_minions": ["Titus Rivendare", "Rylak Metalhead", "Tranquil Meditative", "Maelstrom Emergent", "Ruthless Queensguard"]
+  },
+  {
+    "name": "Dragons - Shiny Ring",
+    "tier": 2,
+    "tribes": ["Dragon"],
+    "key_minions": ["Titus Rivendare", "Persistent Poet", "Felfire Conjurer", "Twilight Broodmother", "Ring Bearer", "Maelstrom Emergent"]
+  },
+  {
+    "name": "Quilboar - Darkgaze",
+    "tier": 1,
+    "tribes": ["Quilboar"],
+    "key_minions": ["Darkgaze Elder", "Prickly Piper", "Brann Bronzebeard"]
+  },
+  {
+    "name": "Quilboar - Smuggler",
+    "tier": 1,
+    "tribes": ["Quilboar"],
+    "key_minions": ["Gem Smuggler", "Titus Rivendare", "Moon-bacon Jazzer", "Prickly Piper", "Rylak Metalhead", "Brann Bronzebeard", "Monstrous Macaw"]
+  },
+  {
+    "name": "Quilboar - Combat Scaling",
+    "tier": 1,
+    "tribes": ["Quilboar"],
+    "key_minions": ["Bristlebach", "Prickly Piper", "Three Lil' Quilboar", "Redtusk Thronraiser"]
+  },
+  {
+    "name": "Undead - Overflow",
+    "tier": 1,
+    "tribes": ["Undead"],
+    "key_minions": ["Leeroy the Reckless", "Diremuck Forager", "Bile Spitter"]
+  },
+  {
+    "name": "Merlocks - Venom Scam",
+    "tier": 1,
+    "tribes": ["Merlock"],
+    "key_minions": ["Titus Rivendare", "Cadaver Caretaker", "Catacomb Crasher", "Monstrous Macaw"]
+  },
+  {
+    "name": "Dragons - Battlecries",
+    "tier": 1,
+    "tribes": ["Dragon"],
+    "key_minions": ["Nightbane, Ignited", "Draconic Warden", "Brann Bronzebeard", "Kalegos, Arcane Aspect"]
+  },
+  {
+    "name": "Beasts - RDU",
+    "tier": 1,
+    "tribes": ["Beast"],
+    "key_minions": ["Rylak Metalhead", "Rabid Panther", "Hunting Tiger Shark", "Monstrous Macaw"]
   }
 ]
