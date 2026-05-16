@@ -13,6 +13,7 @@ logger = logging.getLogger(__name__)
 ALL_TRIBES = [
     "Murloc", "Beast", "Mech", "Demon", "Dragon",
     "Elemental", "Pirate", "Naga", "Undead", "Quillboar",
+    "Neutral",
 ]
 
 # ── Palette ────────────────────────────────────────────────────────────────────
