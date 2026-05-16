@@ -1,12 +1,9 @@
-import sys
 import logging
 from PyQt6.QtWidgets import (
-    QApplication, QWidget, QVBoxLayout, QHBoxLayout, QGridLayout,
+    QApplication, QWidget, QVBoxLayout, QHBoxLayout,
     QLabel, QPushButton, QFrame, QScrollArea,
 )
-from PyQt6.QtCore import Qt, QPoint
-from PyQt6.QtGui import QFont, QColor
-from PyQt6.QtCore import pyqtSignal
+from PyQt6.QtCore import Qt, QPoint, pyqtSignal
 
 logger = logging.getLogger(__name__)
 
@@ -17,222 +14,148 @@ ALL_TRIBES = [
 ]
 
 # ── Palette ────────────────────────────────────────────────────────────────────
-BG_CONTAINER   = "rgba(14, 11, 9, 230)"
-BG_HEADER      = "rgba(22, 16, 9, 245)"
-BG_CHIP_ACTIVE = "#b8821e"
-BG_CHIP_IDLE   = "rgba(38, 30, 20, 220)"
-BG_CARD        = "rgba(28, 22, 14, 190)"
-COLOR_GOLD     = "#c8922a"
-COLOR_DIM      = "#6b5a45"
-COLOR_BODY     = "#b8a898"
-COLOR_MUTED    = "#4a3c2c"
-COLOR_DIVIDER  = "#2e2216"
-COLOR_WARN     = "#e07830"
+BG_APP       = "#13161d"
+BG_TOPBAR    = "#0d1016"
+BG_SECTION   = "#1a1f2c"
+BG_ROW_A     = "#141820"
+BG_ROW_B     = "#161b26"
+BG_UNAVAIL   = "#111318"
+COLOR_TEXT   = "#dde2f0"
+COLOR_DIM    = "#6b7898"
+COLOR_MUTED  = "#353d58"
+COLOR_UNAVAIL = "#394060"
+
+TRIBE_ACCENT = {
+    "Murloc":    "#1a8060",
+    "Beast":     "#7a3c10",
+    "Mech":      "#1868a0",
+    "Demon":     "#7a1535",
+    "Dragon":    "#5030a0",
+    "Elemental": "#b05010",
+    "Pirate":    "#a82020",
+    "Naga":      "#1848b0",
+    "Undead":    "#287828",
+    "Quillboar": "#982870",
+    "Neutral":   "#484e68",
+}
 
 
-# ── Tribe Chip ─────────────────────────────────────────────────────────────────
+# ── Top-bar tribe icon chip ────────────────────────────────────────────────────
 
-class TribeChip(QPushButton):
-    def __init__(self, name: str, parent=None):
-        super().__init__(name, parent)
+class TribeIconChip(QPushButton):
+    def __init__(self, tribe: str, parent=None):
+        super().__init__(tribe[:2].upper(), parent)
+        self._tribe = tribe
         self.setCheckable(True)
+        self.setFixedSize(26, 26)
+        self.setToolTip(tribe)
         self.toggled.connect(self._apply_style)
         self._apply_style(False)
 
     def _apply_style(self, active: bool):
+        accent = TRIBE_ACCENT.get(self._tribe, "#4a5268")
         if active:
             self.setStyleSheet(
-                f"QPushButton {{"
-                f"  background: {BG_CHIP_ACTIVE}; color: #fff;"
-                f"  border-radius: 4px; padding: 5px 8px;"
-                f"  font-family: 'Segoe UI Semibold', 'Segoe UI', sans-serif;"
-                f"  font-size: 11px; font-weight: 600; border: 1px solid #d4a030;"
-                f"}}"
-                f"QPushButton:hover {{ background: #c8922a; }}"
+                f"QPushButton {{ background: {accent}; color: #fff;"
+                f"  border-radius: 4px; font-size: 8px; font-weight: bold;"
+                f"  border: 1px solid {accent}; }}"
+                f"QPushButton:hover {{ background: {accent}; }}"
             )
         else:
             self.setStyleSheet(
-                f"QPushButton {{"
-                f"  background: {BG_CHIP_IDLE}; color: {COLOR_DIM};"
-                f"  border-radius: 4px; padding: 5px 8px;"
-                f"  font-family: 'Segoe UI', sans-serif;"
-                f"  font-size: 11px; border: 1px solid #2a1e10;"
-                f"}}"
-                f"QPushButton:hover {{ background: rgba(55, 42, 26, 220); color: {COLOR_BODY}; }}"
+                "QPushButton { background: #1a1f2e; color: #3a4260;"
+                "  border-radius: 4px; font-size: 8px; font-weight: bold;"
+                "  border: 1px solid #252d42; }"
+                "QPushButton:hover { color: #6b7898; border-color: #353d58; }"
             )
 
 
-# ── Tribe Panel ────────────────────────────────────────────────────────────────
+# ── Tribe section header ───────────────────────────────────────────────────────
 
-class TribePanel(QFrame):
-    tribes_changed = pyqtSignal(set)
-    rescan_requested = pyqtSignal()
-
-    def __init__(self, parent=None):
+class TribeSectionHeader(QFrame):
+    def __init__(self, tribe: str, parent=None):
         super().__init__(parent)
-        self._chips: dict[str, TribeChip] = {}
-        self._build()
-
-    def _build(self):
-        layout = QVBoxLayout(self)
-        layout.setContentsMargins(0, 0, 0, 0)
-        layout.setSpacing(6)
-
-        header = QHBoxLayout()
-        title = QLabel("TRIBES")
-        title.setStyleSheet(
-            f"color: {COLOR_GOLD}; font-family: 'Palatino Linotype', Georgia, serif;"
-            f"font-size: 10px; font-weight: bold; letter-spacing: 2px;"
+        accent = TRIBE_ACCENT.get(tribe, "#4a5268")
+        self.setStyleSheet(
+            f"QFrame {{ background: {BG_SECTION}; border-left: 3px solid {accent}; }}"
         )
-        header.addWidget(title)
-        header.addStretch()
-        rescan = QPushButton("↺")
-        rescan.setFixedSize(22, 22)
-        rescan.setStyleSheet(
-            f"QPushButton {{ background: {COLOR_MUTED}; color: {COLOR_BODY};"
-            f"  border-radius: 4px; font-size: 13px; border: 1px solid #3a2c1a; }}"
-            f"QPushButton:hover {{ background: #3d2e1a; color: {COLOR_GOLD}; }}"
+        layout = QHBoxLayout(self)
+        layout.setContentsMargins(10, 5, 10, 5)
+        lbl = QLabel(tribe.upper())
+        lbl.setStyleSheet(
+            f"color: {COLOR_DIM}; font-family: 'Segoe UI', sans-serif;"
+            f"font-size: 10px; font-weight: bold; letter-spacing: 1px;"
+            f"background: transparent;"
         )
-        rescan.clicked.connect(self.rescan_requested.emit)
-        header.addWidget(rescan)
-        layout.addLayout(header)
+        layout.addWidget(lbl)
+        layout.addStretch()
 
-        grid = QGridLayout()
-        grid.setSpacing(4)
-        for i, tribe in enumerate(ALL_TRIBES):
-            chip = TribeChip(tribe)
-            chip.toggled.connect(self._emit_change)
-            self._chips[tribe] = chip
-            grid.addWidget(chip, i // 3, i % 3)
-        layout.addLayout(grid)
 
-        self._warning_label = QLabel("")
-        self._warning_label.setStyleSheet(
-            f"QLabel {{ color: {COLOR_WARN}; font-size: 10px; padding: 2px;"
-            f"  font-family: 'Segoe UI', sans-serif; }}"
+# ── Minion row ─────────────────────────────────────────────────────────────────
+
+class MinionRow(QFrame):
+    def __init__(self, name: str, tribe: str, alt: bool = False, parent=None):
+        super().__init__(parent)
+        accent = TRIBE_ACCENT.get(tribe, "#4a5268")
+        bg = BG_ROW_B if alt else BG_ROW_A
+        self.setStyleSheet(
+            f"QFrame {{ background: {bg}; border-right: 3px solid {accent}; }}"
+            f"QFrame:hover {{ background: #1c2235; }}"
         )
-        self._warning_label.setWordWrap(True)
-        self._warning_label.hide()
-        layout.addWidget(self._warning_label)
-
-    def _emit_change(self):
-        self.tribes_changed.emit(self.active_tribes())
-
-    def active_tribes(self) -> set:
-        return {name for name, chip in self._chips.items() if chip.isChecked()}
-
-    def set_active_tribes(self, tribes: list[str], flagged_tokens: list[str] | None = None):
-        for name, chip in self._chips.items():
-            chip.blockSignals(True)
-            chip.setChecked(name in tribes)
-            chip.blockSignals(False)
-        if flagged_tokens:
-            self._warning_label.setText(f"⚠ Unrecognized: {', '.join(flagged_tokens)}")
-            self._warning_label.show()
-        else:
-            self._warning_label.hide()
-        self._emit_change()
+        layout = QHBoxLayout(self)
+        layout.setContentsMargins(16, 5, 10, 5)
+        lbl = QLabel(name)
+        lbl.setStyleSheet(
+            f"color: {COLOR_TEXT}; font-family: 'Segoe UI', sans-serif;"
+            f"font-size: 11px; background: transparent;"
+        )
+        layout.addWidget(lbl)
+        layout.addStretch()
 
 
-# ── Comp Card ──────────────────────────────────────────────────────────────────
+# ── Unavailable footer ─────────────────────────────────────────────────────────
 
-TIER_COLORS = {1: "#7a7a7a", 2: "#4a9aff", 3: COLOR_GOLD}
-
-class CompCard(QFrame):
-    def __init__(self, comp: dict, parent=None):
+class UnavailableSection(QFrame):
+    def __init__(self, tribes: list[str], parent=None):
         super().__init__(parent)
         self.setStyleSheet(
-            f"QFrame {{ background: {BG_CARD}; border-radius: 5px;"
-            f"  border: 1px solid #2a1e10; margin: 1px; }}"
+            f"QFrame {{ background: {BG_UNAVAIL}; border-top: 1px solid #1a1f2c; }}"
         )
         layout = QVBoxLayout(self)
-        layout.setContentsMargins(10, 7, 10, 7)
+        layout.setContentsMargins(10, 8, 10, 10)
         layout.setSpacing(3)
-
-        tier = comp.get("tier", 1)
-        star_color = TIER_COLORS.get(tier, COLOR_GOLD)
-        stars = "★" * tier + "☆" * (3 - tier)
-
-        header_row = QHBoxLayout()
-        star_label = QLabel(stars)
-        star_label.setStyleSheet(
-            f"color: {star_color}; font-size: 11px; letter-spacing: 1px;"
+        header = QLabel("Unavailable")
+        header.setStyleSheet(
+            f"color: {COLOR_DIM}; font-family: 'Segoe UI', sans-serif;"
+            f"font-size: 10px; font-weight: bold; letter-spacing: 1px;"
+            f"background: transparent;"
         )
-        name_label = QLabel(comp["name"])
-        name_label.setStyleSheet(
-            f"color: #e8d8c0; font-family: 'Palatino Linotype', Georgia, serif;"
-            f"font-size: 13px; font-weight: bold;"
+        layout.addWidget(header)
+        names = QLabel(",  ".join(tribes))
+        names.setStyleSheet(
+            f"color: {COLOR_UNAVAIL}; font-family: 'Segoe UI', sans-serif;"
+            f"font-size: 10px; background: transparent;"
         )
-        header_row.addWidget(star_label)
-        header_row.addSpacing(6)
-        header_row.addWidget(name_label)
-        header_row.addStretch()
-        layout.addLayout(header_row)
-
-        detail = QLabel(f"Key: {', '.join(comp.get('key_minions', []))}")
-        detail.setStyleSheet(
-            f"color: {COLOR_DIM}; font-size: 10px;"
-            f"font-family: 'Segoe UI', sans-serif;"
-        )
-        detail.setWordWrap(True)
-        layout.addWidget(detail)
+        names.setWordWrap(True)
+        layout.addWidget(names)
 
 
-# ── Comp List ──────────────────────────────────────────────────────────────────
-
-class CompList(QFrame):
-    def __init__(self, parent=None):
-        super().__init__(parent)
-        self._layout = QVBoxLayout(self)
-        self._layout.setContentsMargins(0, 0, 0, 0)
-        self._layout.setSpacing(4)
-        self._show_empty("No tribes active")
-
-    def _show_empty(self, message: str):
-        lbl = QLabel(message)
-        lbl.setStyleSheet(
-            f"color: {COLOR_MUTED}; font-size: 11px;"
-            f"font-family: 'Segoe UI', sans-serif; padding: 4px;"
-        )
-        self._layout.addWidget(lbl)
-
-    def update_comps(self, comps: list[dict]):
-        while self._layout.count():
-            item = self._layout.takeAt(0)
-            if item.widget():
-                item.widget().deleteLater()
-
-        if not comps:
-            self._show_empty("No matching comps")
-            return
-
-        title = QLabel("RECOMMENDED COMPS")
-        title.setStyleSheet(
-            f"color: {COLOR_GOLD}; font-family: 'Palatino Linotype', Georgia, serif;"
-            f"font-size: 10px; font-weight: bold; letter-spacing: 2px; padding-bottom: 2px;"
-        )
-        self._layout.addWidget(title)
-        for comp in comps:
-            self._layout.addWidget(CompCard(comp))
-        self._layout.addStretch()
-
-
-# ── Error Banner ───────────────────────────────────────────────────────────────
+# ── Error banner ───────────────────────────────────────────────────────────────
 
 class ErrorBanner(QLabel):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setWordWrap(True)
         self.setStyleSheet(
-            "QLabel { background: rgba(100, 20, 20, 200); color: #ffb8b8;"
-            " padding: 6px 8px; border-radius: 4px; font-size: 10px;"
+            "QLabel { background: rgba(120, 20, 20, 200); color: #ffb8b8;"
+            " padding: 6px 10px; font-size: 10px;"
             " font-family: 'Segoe UI', sans-serif;"
-            " border: 1px solid #6a1a1a; }"
+            " border-bottom: 1px solid #6a1a1a; }"
         )
         self.hide()
 
-    def show_error(self, message: str):
-        self.setText(message)
+    def show_error(self, msg: str):
+        self.setText(msg)
         self.show()
 
     def clear_error(self):
@@ -240,13 +163,17 @@ class ErrorBanner(QLabel):
         self.setText("")
 
 
-# ── Main Overlay Window ────────────────────────────────────────────────────────
+# ── Main overlay window ────────────────────────────────────────────────────────
 
 class BgOverlay(QWidget):
+    rescan_requested = pyqtSignal()
+
     def __init__(self, config: dict):
         super().__init__()
         self._config = config
         self._drag_pos = QPoint()
+        self._active_tribes: set[str] = set()
+        self._chips: dict[str, TribeIconChip] = {}
         self._setup_window()
         self._build_ui()
 
@@ -257,40 +184,52 @@ class BgOverlay(QWidget):
             | Qt.WindowType.Tool
         )
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
-        self.setWindowOpacity(self._config.get("opacity", 0.88))
-        self.setMinimumWidth(280)
-        self.resize(285, 580)
+        self.setWindowOpacity(self._config.get("opacity", 0.93))
+        self.setMinimumWidth(240)
+        self.resize(240, 620)
         screen = QApplication.primaryScreen().geometry()
-        self.move(screen.width() - 305, 100)
+        self.move(screen.width() - 260, 80)
 
     def _build_ui(self):
         container = QFrame(self)
+        container.setObjectName("container")
         container.setStyleSheet(
-            f"QFrame {{ background: {BG_CONTAINER}; border-radius: 8px;"
-            f"  border: 1px solid #2a1e10; }}"
+            f"QFrame#container {{ background: {BG_APP}; border-radius: 6px;"
+            f"  border: 1px solid #1e2535; }}"
         )
+        root = QVBoxLayout(container)
+        root.setContentsMargins(0, 0, 0, 0)
+        root.setSpacing(0)
 
-        main_layout = QVBoxLayout(container)
-        main_layout.setContentsMargins(0, 0, 0, 10)
-        main_layout.setSpacing(0)
-
-        # ── Header bar ──
-        header_bar = QFrame()
-        header_bar.setStyleSheet(
-            f"QFrame {{ background: {BG_HEADER}; border-radius: 8px 8px 0 0;"
-            f"  border-bottom: 1px solid {COLOR_DIVIDER}; }}"
+        # ── Top bar ──
+        top_bar = QFrame()
+        top_bar.setObjectName("top_bar")
+        top_bar.setStyleSheet(
+            f"QFrame#top_bar {{ background: {BG_TOPBAR}; border-radius: 6px 6px 0 0;"
+            f"  border-bottom: 1px solid #1a2030; }}"
         )
-        header_layout = QHBoxLayout(header_bar)
-        header_layout.setContentsMargins(12, 8, 8, 8)
+        top_layout = QHBoxLayout(top_bar)
+        top_layout.setContentsMargins(6, 6, 6, 6)
+        top_layout.setSpacing(3)
 
-        title = QLabel("BG ADVISOR")
-        title.setStyleSheet(
-            f"color: {COLOR_GOLD}; font-family: 'Palatino Linotype', Georgia, serif;"
-            f"font-size: 13px; font-weight: bold; letter-spacing: 2px;"
-            f"border: none; background: transparent;"
+        for tribe in ALL_TRIBES:
+            chip = TribeIconChip(tribe)
+            chip.toggled.connect(lambda checked, t=tribe: self._on_chip_toggle(t, checked))
+            self._chips[tribe] = chip
+            top_layout.addWidget(chip)
+
+        top_layout.addStretch()
+
+        rescan_btn = QPushButton("↺")
+        rescan_btn.setFixedSize(22, 22)
+        rescan_btn.setToolTip("Rescan (F8)")
+        rescan_btn.setStyleSheet(
+            f"QPushButton {{ background: #1e2535; color: {COLOR_DIM};"
+            f"  border-radius: 4px; font-size: 13px; border: 1px solid #252d42; }}"
+            f"QPushButton:hover {{ color: {COLOR_TEXT}; border-color: #353d58; }}"
         )
-        header_layout.addWidget(title)
-        header_layout.addStretch()
+        rescan_btn.clicked.connect(self.rescan_requested.emit)
+        top_layout.addWidget(rescan_btn)
 
         exit_btn = QPushButton("×")
         exit_btn.setFixedSize(22, 22)
@@ -300,53 +239,141 @@ class BgOverlay(QWidget):
             f"QPushButton:hover {{ background: rgba(160, 30, 30, 180); color: #ffaaaa; }}"
         )
         exit_btn.clicked.connect(QApplication.instance().quit)
-        header_layout.addWidget(exit_btn)
-        main_layout.addWidget(header_bar)
+        top_layout.addWidget(exit_btn)
 
-        # ── Body ──
-        body = QVBoxLayout()
-        body.setContentsMargins(10, 10, 10, 0)
-        body.setSpacing(8)
+        root.addWidget(top_bar)
 
+        # ── Error banner ──
         self._error_banner = ErrorBanner()
-        body.addWidget(self._error_banner)
+        root.addWidget(self._error_banner)
 
-        self._tribe_panel = TribePanel()
-        self._tribe_panel.tribes_changed.connect(self._on_tribes_changed)
-        self._tribe_panel.rescan_requested.connect(self._on_rescan)
-        body.addWidget(self._tribe_panel)
-
-        divider = QFrame()
-        divider.setFrameShape(QFrame.Shape.HLine)
-        divider.setStyleSheet(f"QFrame {{ color: {COLOR_DIVIDER}; }}")
-        body.addWidget(divider)
-
+        # ── Scroll area ──
         scroll = QScrollArea()
         scroll.setWidgetResizable(True)
         scroll.setStyleSheet(
-            "QScrollArea { border: none; background: transparent; }"
-            "QScrollBar:vertical { background: rgba(20,14,8,180); width: 5px; border-radius: 2px; }"
-            f"QScrollBar::handle:vertical {{ background: {COLOR_MUTED}; border-radius: 2px; }}"
-            "QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical { height: 0px; }"
+            f"QScrollArea {{ border: none; background: {BG_APP}; }}"
+            f"QScrollBar:vertical {{ background: {BG_APP}; width: 4px; border-radius: 2px; }}"
+            f"QScrollBar::handle:vertical {{ background: #2a3050; border-radius: 2px; }}"
+            f"QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {{ height: 0px; }}"
         )
         scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
-        self._comp_list = CompList()
-        scroll.setWidget(self._comp_list)
-        body.addWidget(scroll, stretch=1)
 
-        main_layout.addLayout(body)
+        self._scroll_content = QFrame()
+        self._scroll_content.setStyleSheet(f"QFrame {{ background: {BG_APP}; }}")
+        self._scroll_layout = QVBoxLayout(self._scroll_content)
+        self._scroll_layout.setContentsMargins(0, 0, 0, 0)
+        self._scroll_layout.setSpacing(0)
+        self._show_placeholder("No tribes selected\nPress F8 to scan or toggle tribes above")
+        self._scroll_layout.addStretch()
+
+        scroll.setWidget(self._scroll_content)
+        root.addWidget(scroll, stretch=1)
 
         outer = QVBoxLayout(self)
         outer.setContentsMargins(0, 0, 0, 0)
         outer.addWidget(container)
 
-    def _on_rescan(self):
-        pass  # replaced by main.py
+    # ── Scroll content helpers ─────────────────────────────────────────────────
 
-    def _on_tribes_changed(self, active: set):
+    def _show_placeholder(self, msg: str):
+        lbl = QLabel(msg)
+        lbl.setStyleSheet(
+            f"color: {COLOR_MUTED}; font-size: 11px; padding: 20px 14px;"
+            f"font-family: 'Segoe UI', sans-serif; background: transparent;"
+        )
+        lbl.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        lbl.setWordWrap(True)
+        self._scroll_layout.addWidget(lbl)
+
+    def _clear_scroll(self):
+        while self._scroll_layout.count():
+            item = self._scroll_layout.takeAt(0)
+            if item.widget():
+                item.widget().deleteLater()
+
+    def _rebuild_list(self, comps: list[dict]):
+        self._clear_scroll()
+
+        if not self._active_tribes:
+            self._show_placeholder("No tribes selected\nPress F8 to scan or toggle tribes above")
+            self._scroll_layout.addStretch()
+            return
+
+        # Collect key minions per active tribe
+        tribe_minions: dict[str, list[str]] = {t: [] for t in ALL_TRIBES if t in self._active_tribes}
+        for comp in comps:
+            for tribe in comp.get("tribes", []):
+                if tribe in tribe_minions:
+                    for minion in comp.get("key_minions", []):
+                        if minion not in tribe_minions[tribe]:
+                            tribe_minions[tribe].append(minion)
+
+        # Render one section per active tribe
+        for tribe in ALL_TRIBES:
+            if tribe not in self._active_tribes:
+                continue
+            self._scroll_layout.addWidget(TribeSectionHeader(tribe))
+            minions = tribe_minions.get(tribe, [])
+            if minions:
+                for i, minion in enumerate(minions):
+                    self._scroll_layout.addWidget(MinionRow(minion, tribe, alt=bool(i % 2)))
+            else:
+                lbl = QLabel("  No comps available")
+                lbl.setStyleSheet(
+                    f"color: {COLOR_MUTED}; font-size: 10px; padding: 5px 16px;"
+                    f"font-family: 'Segoe UI', sans-serif; background: {BG_ROW_A};"
+                )
+                self._scroll_layout.addWidget(lbl)
+
+        # Unavailable footer
+        unavailable = [t for t in ALL_TRIBES if t not in self._active_tribes]
+        if unavailable:
+            self._scroll_layout.addWidget(UnavailableSection(unavailable))
+
+        self._scroll_layout.addStretch()
+
+    def _refresh_comps(self):
         from recommender import load_comps, filter_comps
-        comps = load_comps()
-        self._comp_list.update_comps(filter_comps(comps, active))
+        comps = filter_comps(load_comps(), self._active_tribes)
+        self._rebuild_list(comps)
+
+    # ── Chip toggle ────────────────────────────────────────────────────────────
+
+    def _on_chip_toggle(self, tribe: str, checked: bool):
+        if checked:
+            self._active_tribes.add(tribe)
+        else:
+            self._active_tribes.discard(tribe)
+        self._refresh_comps()
+
+    # ── Public API (called by main.py) ─────────────────────────────────────────
+
+    @property
+    def _tribe_panel(self):
+        """Compatibility shim — main.py accesses overlay._tribe_panel.*"""
+        return self
+
+    def set_active_tribes(self, tribes: list[str], flagged_tokens: list[str] | None = None):
+        self._active_tribes = set(tribes)
+        for name, chip in self._chips.items():
+            chip.blockSignals(True)
+            chip.setChecked(name in self._active_tribes)
+            chip.blockSignals(False)
+            chip._apply_style(name in self._active_tribes)
+        if flagged_tokens:
+            self.show_error(f"⚠ Unrecognized: {', '.join(flagged_tokens)}")
+        self._refresh_comps()
+
+    def toggle_visibility(self):
+        self.setVisible(not self.isVisible())
+
+    def show_error(self, msg: str):
+        self._error_banner.show_error(msg)
+
+    def clear_error(self):
+        self._error_banner.clear_error()
+
+    # ── Drag to move ───────────────────────────────────────────────────────────
 
     def mousePressEvent(self, event):
         if event.button() == Qt.MouseButton.LeftButton:
@@ -355,12 +382,3 @@ class BgOverlay(QWidget):
     def mouseMoveEvent(self, event):
         if event.buttons() == Qt.MouseButton.LeftButton and self._drag_pos:
             self.move(event.globalPosition().toPoint() - self._drag_pos)
-
-    def toggle_visibility(self):
-        self.setVisible(not self.isVisible())
-
-    def show_error(self, message: str):
-        self._error_banner.show_error(message)
-
-    def clear_error(self):
-        self._error_banner.clear_error()
