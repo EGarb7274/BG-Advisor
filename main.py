@@ -2,11 +2,17 @@ import sys
 import logging
 import keyboard
 from PyQt6.QtWidgets import QApplication
-from PyQt6.QtCore import QTimer
+from PyQt6.QtCore import QObject, pyqtSignal
 
 from config import load_config, save_config
 from ocr import scan_tribes
 from overlay import BgOverlay
+
+
+class _HotkeyBridge(QObject):
+    scan_triggered = pyqtSignal()
+    toggle_triggered = pyqtSignal()
+    calibrate_triggered = pyqtSignal()
 
 logging.basicConfig(
     filename="bg.log",
@@ -47,13 +53,18 @@ def main():
             save_config(cfg)
             logger.info(f"Crop region saved: {region}")
 
+    bridge = _HotkeyBridge()
+    bridge.scan_triggered.connect(on_scan)
+    bridge.toggle_triggered.connect(on_toggle)
+    bridge.calibrate_triggered.connect(on_calibrate)
+
     # Wire rescan button to same handler as F8
-    overlay._tribe_panel.rescan_requested.connect(lambda: QTimer.singleShot(0, on_scan))
+    overlay._tribe_panel.rescan_requested.connect(on_scan)
 
     try:
-        keyboard.add_hotkey(cfg["hotkey_scan"],      lambda: QTimer.singleShot(0, on_scan))
-        keyboard.add_hotkey(cfg["hotkey_toggle"],    lambda: QTimer.singleShot(0, on_toggle))
-        keyboard.add_hotkey(cfg["hotkey_calibrate"], lambda: QTimer.singleShot(0, on_calibrate))
+        keyboard.add_hotkey(cfg["hotkey_scan"],      lambda: bridge.scan_triggered.emit())
+        keyboard.add_hotkey(cfg["hotkey_toggle"],    lambda: bridge.toggle_triggered.emit())
+        keyboard.add_hotkey(cfg["hotkey_calibrate"], lambda: bridge.calibrate_triggered.emit())
         logger.info("BG-Advisor started")
     except Exception as e:
         overlay.show_error(f"Hotkey registration failed: {e}")

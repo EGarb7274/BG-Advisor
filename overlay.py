@@ -35,30 +35,23 @@ class TribeChip(QPushButton):
     def __init__(self, name: str, parent=None):
         super().__init__(name, parent)
         self.setCheckable(True)
-        self.toggled.connect(self._apply_style)
-        self._apply_style(False)
-
-    def _apply_style(self, active: bool):
-        if active:
-            self.setStyleSheet(
-                f"QPushButton {{"
-                f"  background: {BG_CHIP_ACTIVE}; color: #fff;"
-                f"  border-radius: 4px; padding: 5px 8px;"
-                f"  font-family: 'Segoe UI Semibold', 'Segoe UI', sans-serif;"
-                f"  font-size: 11px; font-weight: 600; border: 1px solid #d4a030;"
-                f"}}"
-                f"QPushButton:hover {{ background: #c8922a; }}"
-            )
-        else:
-            self.setStyleSheet(
-                f"QPushButton {{"
-                f"  background: {BG_CHIP_IDLE}; color: {COLOR_DIM};"
-                f"  border-radius: 4px; padding: 5px 8px;"
-                f"  font-family: 'Segoe UI', sans-serif;"
-                f"  font-size: 11px; border: 1px solid #2a1e10;"
-                f"}}"
-                f"QPushButton:hover {{ background: rgba(55, 42, 26, 220); color: {COLOR_BODY}; }}"
-            )
+        self.setStyleSheet(
+            f"QPushButton {{"
+            f"  background: {BG_CHIP_IDLE}; color: {COLOR_DIM};"
+            f"  border-radius: 4px; padding: 5px 8px;"
+            f"  font-family: 'Segoe UI', sans-serif;"
+            f"  font-size: 11px; border: 1px solid #2a1e10;"
+            f"}}"
+            f"QPushButton:hover {{"
+            f"  background: rgba(55, 42, 26, 220); color: {COLOR_BODY};"
+            f"}}"
+            f"QPushButton:checked {{"
+            f"  background: {BG_CHIP_ACTIVE}; color: #fff;"
+            f"  font-family: 'Segoe UI Semibold', 'Segoe UI', sans-serif;"
+            f"  font-weight: 600; border: 1px solid #d4a030;"
+            f"}}"
+            f"QPushButton:checked:hover {{ background: #c8922a; }}"
+        )
 
 
 # ── Tribe Panel ────────────────────────────────────────────────────────────────

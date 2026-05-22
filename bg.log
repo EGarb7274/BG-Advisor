@@ -1,0 +1,66 @@
+2026-05-16 11:12:07,383 INFO BG-Advisor started
+2026-05-16 11:12:49,126 ERROR OCR failed: a bytes-like object is required, not 'list'
+2026-05-16 11:12:49,128 INFO Scan complete: matched=[] flagged=[]
+2026-05-16 11:13:41,105 ERROR OCR failed: a bytes-like object is required, not 'list'
+2026-05-16 11:13:41,106 INFO Scan complete: matched=[] flagged=[]
+2026-05-16 11:16:58,364 INFO BG-Advisor started
+2026-05-16 11:18:36,773 ERROR OCR failed: a bytes-like object is required, not 'list'
+2026-05-16 11:18:36,774 INFO Scan complete: matched=[] flagged=[]
+2026-05-16 11:18:51,136 ERROR OCR failed: a bytes-like object is required, not 'list'
+2026-05-16 11:18:51,137 INFO Scan complete: matched=[] flagged=[]
+2026-05-16 11:38:09,160 INFO BG-Advisor started
+2026-05-16 11:38:32,604 ERROR OCR failed: a bytes-like object is required, not 'list'
+2026-05-16 11:38:32,605 INFO Scan complete: matched=[] flagged=[]
+2026-05-16 13:18:07,257 INFO BG-Advisor started
+2026-05-16 13:22:16,554 INFO BG-Advisor started
+2026-05-16 13:45:02,101 INFO BG-Advisor started
+2026-05-16 13:48:18,194 INFO BG-Advisor started
+2026-05-16 13:54:59,953 INFO BG-Advisor started
+2026-05-16 14:09:56,513 INFO BG-Advisor started
+2026-05-16 14:33:39,889 INFO BG-Advisor started
+2026-05-16 14:36:13,197 INFO BG-Advisor started
+2026-05-16 14:40:37,307 INFO BG-Advisor started
+2026-05-16 14:41:19,724 INFO BG-Advisor started
+2026-05-16 15:38:58,265 INFO BG-Advisor started
+2026-05-16 15:46:08,785 INFO BG-Advisor started
+2026-05-16 19:26:04,499 INFO BG-Advisor started
+2026-05-17 12:33:34,707 INFO BG-Advisor started
+2026-05-17 14:14:06,507 INFO BG-Advisor started
+2026-05-17 15:26:36,040 INFO BG-Advisor started
+2026-05-17 15:28:45,344 INFO BG-Advisor started
+2026-05-17 15:29:16,801 INFO BG-Advisor started
+2026-05-17 15:29:57,961 INFO BG-Advisor started
+2026-05-17 15:30:39,352 INFO BG-Advisor started
+2026-05-17 15:31:22,903 INFO BG-Advisor started
+2026-05-17 15:34:20,464 INFO BG-Advisor started
+2026-05-17 15:35:30,996 INFO BG-Advisor started
+2026-05-17 16:16:56,545 INFO BG-Advisor started
+2026-05-17 16:23:12,664 INFO BG-Advisor started
+2026-05-17 16:23:28,873 ERROR OCR failed: No module named 'winrt.windows.foundation.collections'
+2026-05-17 16:23:28,876 INFO Scan complete: matched=[] flagged=[]
+2026-05-17 16:23:39,345 ERROR OCR failed: No module named 'winrt.windows.foundation.collections'
+2026-05-17 16:23:39,346 INFO Scan complete: matched=[] flagged=[]
+2026-05-17 16:23:46,419 ERROR OCR failed: No module named 'winrt.windows.foundation.collections'
+2026-05-17 16:23:46,420 INFO Scan complete: matched=[] flagged=[]
+2026-05-17 16:24:44,664 INFO BG-Advisor started
+2026-05-17 16:24:47,191 ERROR OCR failed: No module named 'winrt.windows.foundation.collections'
+2026-05-17 16:24:47,193 INFO Scan complete: matched=[] flagged=[]
+2026-05-17 16:28:18,425 INFO BG-Advisor started
+2026-05-17 16:28:24,956 ERROR OCR failed: No module named 'winrt.windows.foundation.collections'
+2026-05-17 16:28:24,958 INFO Scan complete: matched=[] flagged=[]
+2026-05-17 16:28:49,989 ERROR OCR failed: No module named 'winrt.windows.foundation.collections'
+2026-05-17 16:28:49,990 INFO Scan complete: matched=[] flagged=[]
+2026-05-17 16:29:09,954 INFO BG-Advisor started
+2026-05-17 17:09:35,571 ERROR OCR failed: No module named 'winrt.windows.foundation.collections'
+2026-05-17 17:09:35,590 INFO Scan complete: matched=[] flagged=[]
+2026-05-17 17:09:48,574 ERROR OCR failed: No module named 'winrt.windows.foundation.collections'
+2026-05-17 17:09:48,576 INFO Scan complete: matched=[] flagged=[]
+2026-05-17 17:09:50,750 ERROR OCR failed: No module named 'winrt.windows.foundation.collections'
+2026-05-17 17:09:50,752 INFO Scan complete: matched=[] flagged=[]
+2026-05-17 17:37:51,305 ERROR OCR failed: No module named 'winrt.windows.foundation.collections'
+2026-05-17 17:37:51,308 INFO Scan complete: matched=[] flagged=[]
+2026-05-17 18:26:21,645 ERROR OCR failed: No module named 'winrt.windows.foundation.collections'
+2026-05-17 18:26:21,648 INFO Scan complete: matched=[] flagged=[]
+2026-05-17 19:01:22,994 ERROR OCR failed: No module named 'winrt.windows.foundation.collections'
+2026-05-17 19:01:22,996 INFO Scan complete: matched=[] flagged=[]
+2026-05-17 19:37:08,212 INFO BG-Advisor started
