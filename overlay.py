@@ -486,6 +486,106 @@ class CompCard(QFrame):
             self._arrow.setText("▼" if self._expanded else "▶")
 
 
+
+# ── Combo Card ─────────────────────────────────────────────────────────────────
+
+class ComboCard(QFrame):
+    comp_link_clicked = pyqtSignal(str)
+
+    def __init__(self, combo: dict, parent=None):
+        super().__init__(parent)
+        self._expanded = False
+        self.setCursor(Qt.CursorShape.PointingHandCursor)
+        self.setStyleSheet(
+            f"QFrame {{ background: {BG_CARD}; border-radius: 5px;"
+            f"  border: 1px solid #2a1e10; margin: 1px; }}"
+        )
+
+        root = QVBoxLayout(self)
+        root.setContentsMargins(10, 8, 10, 8)
+        root.setSpacing(0)
+
+        cards = combo.get("cards", ["?", "?"])
+        tiers = combo.get("tiers", [0, 0])
+        tier_text = f"T{tiers[0]} / T{tiers[1]}" if len(tiers) == 2 else ""
+
+        # ── Header row (always visible) ──
+        header_row = QHBoxLayout()
+        header_row.setSpacing(6)
+
+        name_lbl = QLabel(" + ".join(cards))
+        name_lbl.setStyleSheet(
+            f"color: #e8d8c0; font-family: 'Palatino Linotype', Georgia, serif;"
+            f"font-size: 12px; font-weight: bold; background: transparent;"
+        )
+        name_lbl.setWordWrap(True)
+        tier_lbl = QLabel(tier_text)
+        tier_lbl.setStyleSheet(
+            f"color: {COLOR_DIM}; font-size: 10px; background: transparent;"
+        )
+        self._arrow = QLabel("▶")
+        self._arrow.setStyleSheet(
+            f"color: {COLOR_MUTED}; font-size: 9px; background: transparent;"
+        )
+        header_row.addWidget(name_lbl, stretch=1)
+        header_row.addWidget(tier_lbl)
+        header_row.addWidget(self._arrow)
+        root.addLayout(header_row)
+
+        # ── Expanded detail panel (hidden by default) ──
+        self._detail = QFrame()
+        self._detail.setStyleSheet(
+            f"QFrame {{ background: transparent; border-top: 1px solid #3a2c1a; }}"
+        )
+        detail_layout = QVBoxLayout(self._detail)
+        detail_layout.setContentsMargins(0, 6, 0, 2)
+        detail_layout.setSpacing(4)
+
+        if cards:
+            detail_layout.addWidget(_detail_section("Cards", cards, clickable=True))
+
+        synergy = combo.get("synergy", "")
+        if synergy:
+            detail_layout.addWidget(_detail_section("Synergy", synergy))
+
+        leads_to = combo.get("leads_to", "")
+        if leads_to:
+            leads_frame = QFrame()
+            leads_frame.setStyleSheet("QFrame { background: transparent; }")
+            leads_layout = QVBoxLayout(leads_frame)
+            leads_layout.setContentsMargins(0, 4, 0, 0)
+            leads_layout.setSpacing(2)
+
+            leads_lbl = QLabel("LEADS TO")
+            leads_lbl.setStyleSheet(
+                f"color: {COLOR_GOLD}; font-family: 'Segoe UI', sans-serif;"
+                f"font-size: 9px; font-weight: bold; letter-spacing: 1px; background: transparent;"
+            )
+            leads_layout.addWidget(leads_lbl)
+
+            link_btn = QPushButton(leads_to)
+            link_btn.setCursor(Qt.CursorShape.PointingHandCursor)
+            link_btn.setStyleSheet(
+                f"QPushButton {{ background: transparent; color: {COLOR_BODY};"
+                f"  font-family: 'Segoe UI', sans-serif; font-size: 10px;"
+                f"  border: none; padding: 1px 0; text-align: left;"
+                f"  text-decoration: underline; }}"
+                f"QPushButton:hover {{ color: {COLOR_GOLD}; }}"
+            )
+            link_btn.clicked.connect(lambda: self.comp_link_clicked.emit(leads_to))
+            leads_layout.addWidget(link_btn)
+            detail_layout.addWidget(leads_frame)
+
+        self._detail.hide()
+        root.addWidget(self._detail)
+
+    def mousePressEvent(self, event):
+        if event.button() == Qt.MouseButton.LeftButton:
+            self._expanded = not self._expanded
+            self._detail.setVisible(self._expanded)
+            self._arrow.setText("▼" if self._expanded else "▶")
+
+
 # ── Comp List ──────────────────────────────────────────────────────────────────
 
 class CompList(QFrame):
