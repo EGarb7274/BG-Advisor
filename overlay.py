@@ -525,6 +525,57 @@ class CompList(QFrame):
         self._layout.addStretch()
 
 
+# ── Tab Bar ────────────────────────────────────────────────────────────────────
+
+class TabBar(QFrame):
+    tab_changed = pyqtSignal(int)
+
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self._active = 0
+        self._build()
+
+    def _build(self):
+        layout = QHBoxLayout(self)
+        layout.setContentsMargins(0, 0, 0, 0)
+        layout.setSpacing(4)
+        self._btns: list[QPushButton] = []
+        for i, label in enumerate(("EARLY COMBOS", "LATE GAME")):
+            btn = QPushButton(label)
+            btn.setCheckable(True)
+            btn.setChecked(i == 0)
+            btn.setStyleSheet(
+                f"QPushButton {{"
+                f"  background: {BG_CHIP_IDLE}; color: {COLOR_DIM};"
+                f"  border-radius: 4px; padding: 4px 8px;"
+                f"  font-family: 'Segoe UI', sans-serif;"
+                f"  font-size: 10px; font-weight: bold; letter-spacing: 1px;"
+                f"  border: 1px solid #2a1e10;"
+                f"}}"
+                f"QPushButton:checked {{"
+                f"  background: {BG_CHIP_ACTIVE}; color: #fff;"
+                f"  border: 1px solid #d4a030;"
+                f"}}"
+                f"QPushButton:hover {{ background: rgba(55, 42, 26, 220); color: {COLOR_BODY}; }}"
+                f"QPushButton:checked:hover {{ background: #c8922a; }}"
+            )
+            idx = i
+            btn.clicked.connect(lambda _checked, i=idx: self._on_click(i))
+            layout.addWidget(btn)
+            self._btns.append(btn)
+
+    def _on_click(self, index: int):
+        if index == self._active:
+            return
+        self._active = index
+        for i, btn in enumerate(self._btns):
+            btn.setChecked(i == index)
+        self.tab_changed.emit(index)
+
+    def set_active(self, index: int):
+        self._on_click(index)
+
+
 # ── Error Banner ───────────────────────────────────────────────────────────────
 
 class ErrorBanner(QLabel):
