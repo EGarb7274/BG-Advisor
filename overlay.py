@@ -594,6 +594,7 @@ class CompList(QFrame):
         self._layout = QVBoxLayout(self)
         self._layout.setContentsMargins(0, 0, 0, 0)
         self._layout.setSpacing(4)
+        self._comp_cards: dict[str, CompCard] = {}
         self._show_empty("No tribes active")
 
     def _show_empty(self, message: str):
@@ -610,6 +611,8 @@ class CompList(QFrame):
             if item.widget():
                 item.widget().deleteLater()
 
+        self._comp_cards = {}
+
         if not comps:
             self._show_empty("No matching comps")
             return
@@ -621,8 +624,13 @@ class CompList(QFrame):
         )
         self._layout.addWidget(title)
         for comp in comps:
-            self._layout.addWidget(CompCard(comp))
+            card = CompCard(comp)
+            self._comp_cards[comp["name"]] = card
+            self._layout.addWidget(card)
         self._layout.addStretch()
+
+    def get_comp_card(self, name: str) -> 'CompCard | None':
+        return self._comp_cards.get(name)
 
 
 # ── Tab Bar ────────────────────────────────────────────────────────────────────
@@ -674,6 +682,49 @@ class TabBar(QFrame):
 
     def set_active(self, index: int):
         self._on_click(index)
+
+
+# ── Combo List ─────────────────────────────────────────────────────────────────
+
+class ComboList(QFrame):
+    comp_link_clicked = pyqtSignal(str)
+
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self._layout = QVBoxLayout(self)
+        self._layout.setContentsMargins(0, 0, 0, 0)
+        self._layout.setSpacing(4)
+        self._show_empty("No tribes active")
+
+    def _show_empty(self, message: str):
+        lbl = QLabel(message)
+        lbl.setStyleSheet(
+            f"color: {COLOR_MUTED}; font-size: 11px;"
+            f"font-family: 'Segoe UI', sans-serif; padding: 4px;"
+        )
+        self._layout.addWidget(lbl)
+
+    def update_combos(self, combos: list[dict]):
+        while self._layout.count():
+            item = self._layout.takeAt(0)
+            if item.widget():
+                item.widget().deleteLater()
+
+        if not combos:
+            self._show_empty("No matching combos")
+            return
+
+        title = QLabel("EARLY COMBOS")
+        title.setStyleSheet(
+            f"color: {COLOR_GOLD}; font-family: 'Palatino Linotype', Georgia, serif;"
+            f"font-size: 10px; font-weight: bold; letter-spacing: 2px; padding-bottom: 2px;"
+        )
+        self._layout.addWidget(title)
+        for combo in combos:
+            card = ComboCard(combo)
+            card.comp_link_clicked.connect(self.comp_link_clicked)
+            self._layout.addWidget(card)
+        self._layout.addStretch()
 
 
 # ── Error Banner ───────────────────────────────────────────────────────────────
