@@ -2,7 +2,7 @@ import sys
 import logging
 from PyQt6.QtWidgets import (
     QApplication, QWidget, QVBoxLayout, QHBoxLayout, QGridLayout,
-    QLabel, QPushButton, QFrame, QScrollArea,
+    QLabel, QPushButton, QFrame, QScrollArea, QStackedWidget,
 )
 from PyQt6.QtCore import Qt, QPoint, QRect, QThread, pyqtSignal
 from PyQt6.QtGui import QFont, QColor, QPixmap, QCursor
@@ -874,18 +874,36 @@ class BgOverlay(QWidget):
         divider.setStyleSheet(f"QFrame {{ color: {COLOR_DIVIDER}; }}")
         body.addWidget(divider)
 
-        scroll = QScrollArea()
-        scroll.setWidgetResizable(True)
-        scroll.setStyleSheet(
+        self._tab_bar = TabBar()
+        self._tab_bar.tab_changed.connect(self._on_tab_changed)
+        body.addWidget(self._tab_bar)
+
+        _scroll_style = (
             "QScrollArea { border: none; background: transparent; }"
             "QScrollBar:vertical { background: rgba(20,14,8,180); width: 5px; border-radius: 2px; }"
             f"QScrollBar::handle:vertical {{ background: {COLOR_MUTED}; border-radius: 2px; }}"
             "QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical { height: 0px; }"
         )
-        scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+
+        combo_scroll = QScrollArea()
+        combo_scroll.setWidgetResizable(True)
+        combo_scroll.setStyleSheet(_scroll_style)
+        combo_scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+        self._combo_list = ComboList()
+        self._combo_list.comp_link_clicked.connect(self._on_comp_link)
+        combo_scroll.setWidget(self._combo_list)
+
+        self._comp_scroll = QScrollArea()
+        self._comp_scroll.setWidgetResizable(True)
+        self._comp_scroll.setStyleSheet(_scroll_style)
+        self._comp_scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         self._comp_list = CompList()
-        scroll.setWidget(self._comp_list)
-        body.addWidget(scroll, stretch=1)
+        self._comp_scroll.setWidget(self._comp_list)
+
+        self._stack = QStackedWidget()
+        self._stack.addWidget(combo_scroll)       # index 0 — Early Combos
+        self._stack.addWidget(self._comp_scroll)  # index 1 — Late Game
+        body.addWidget(self._stack, stretch=1)
 
         main_layout.addLayout(body)
 
@@ -896,10 +914,22 @@ class BgOverlay(QWidget):
     def _on_rescan(self):
         pass  # replaced by main.py
 
+    def _on_tab_changed(self, index: int):
+        self._stack.setCurrentIndex(index)
+
+    def _on_comp_link(self, name: str):
+        self._tab_bar.set_active(1)
+        card = self._comp_list.get_comp_card(name)
+        if card:
+            self._comp_scroll.ensureWidgetVisible(card)
+
     def _on_tribes_changed(self, active: set):
         from recommender import load_comps, filter_comps
+        from combo_recommender import load_combos, filter_combos as filter_combo_list
         comps = load_comps()
         self._comp_list.update_comps(filter_comps(comps, active))
+        combos = load_combos()
+        self._combo_list.update_combos(filter_combo_list(combos, active))
 
     def mousePressEvent(self, event):
         if event.button() == Qt.MouseButton.LeftButton:
