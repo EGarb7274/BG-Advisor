@@ -1,0 +1,177 @@
+[
+  {
+    "cards": ["Lurking Leviathan", "Sewer Lord"],
+    "tribes": ["Beast"],
+    "tiers": [4, 3],
+    "synergy": "Sewer Lord spawns rat tokens every shop phase — each one passively stacks Leviathan's +1/+1 buff without spending any actions.",
+    "leads_to": "Beasts - Leviathan"
+  },
+  {
+    "cards": ["Titus Rivendare", "Goldrinn, The Great Wolf"],
+    "tribes": ["Beast"],
+    "tiers": [5, 4],
+    "synergy": "Goldrinn gives all Beasts +5 attack on death — Titus doubles the trigger to +10. One death buffs your whole Beast army catastrophically.",
+    "leads_to": "Beasts - Summons"
+  },
+  {
+    "cards": ["Rylak Metalhead", "Hunting Tiger Shark"],
+    "tribes": ["Beast"],
+    "tiers": [4, 3],
+    "synergy": "Every Beast attack triggers Tiger Shark's +2/+2 buff. Monstrous Macaw chains these triggers — stack them both early to ramp exponentially.",
+    "leads_to": "Beasts - RDU"
+  },
+  {
+    "cards": ["Darkgaze Elder", "Prickly Piper"],
+    "tribes": ["Quillboar"],
+    "tiers": [2, 1],
+    "synergy": "Darkgaze makes each blood gem worth +2/+2 instead of +1/+1. Prickly Piper applies every gem to all friendly minions — your whole board scales off a single gem.",
+    "leads_to": "Quilboar - Darkgaze"
+  },
+  {
+    "cards": ["Gem Smuggler", "Titus Rivendare"],
+    "tribes": ["Quillboar"],
+    "tiers": [2, 5],
+    "synergy": "Gem Smuggler discovers a blood gem each time you play a Quilboar. Titus doubles that to two gems per Quilboar — flood the board with gems every turn.",
+    "leads_to": "Quilboar - Smuggler"
+  },
+  {
+    "cards": ["Gem Smuggler", "Moon-bacon Jazzer"],
+    "tribes": ["Quillboar"],
+    "tiers": [2, 3],
+    "synergy": "Gem Smuggler generates gems on each Quilboar played. Moon-bacon Jazzer applies each gem to a random Quilboar — combine with Prickly Piper to spread gems to everyone.",
+    "leads_to": "Quilboar - Smuggler"
+  },
+  {
+    "cards": ["Bristlebach", "Prickly Piper"],
+    "tribes": ["Quillboar"],
+    "tiers": [1, 1],
+    "synergy": "Bristlebach generates a blood gem every time it attacks in combat. Prickly Piper turns that single gem into a buff for every friendly minion — passive board-wide scaling.",
+    "leads_to": "Quilboar - Combat Scaling"
+  },
+  {
+    "cards": ["Handless Forsaken", "Drustfallen Butcher"],
+    "tribes": ["Undead"],
+    "tiers": [2, 4],
+    "synergy": "Butchering doubles the attack of all Undeads. Handless Forsaken spawns the summons that carry those doubled attacks — commit once both are in hand.",
+    "leads_to": "Undead - Attack Scaling"
+  },
+  {
+    "cards": ["Leeroy the Reckless", "Bile Spitter"],
+    "tribes": ["Undead"],
+    "tiers": [4, 2],
+    "synergy": "Bile Spitter gives a friendly minion Poisonous. Give it to Leeroy — he one-shots anything he touches and deals overflow damage directly to the enemy hero.",
+    "leads_to": "Undead - Overflow"
+  },
+  {
+    "cards": ["Titus Rivendare", "Cadaver Caretaker"],
+    "tribes": ["Murloc"],
+    "tiers": [5, 3],
+    "synergy": "Cadaver Caretaker has a reborn death rattle. Titus doubles death rattle triggers — pair with Monstrous Macaw to chain reborn loops that rebuild your board each combat.",
+    "leads_to": "Murlocs - Reborn Loop"
+  },
+  {
+    "cards": ["Magicfin Mycologist", "Primitive Painter"],
+    "tribes": ["Murloc"],
+    "tiers": [3, 2],
+    "synergy": "Mycologist summons a random Murloc each time you play a Murloc. Primitive Painter buffs all Murlocs in hand and board — each chain play buffs an ever-growing swarm.",
+    "leads_to": "Murlocs - APM"
+  },
+  {
+    "cards": ["Brann Bronzebeard", "Magicfin Mycologist"],
+    "tribes": ["Murloc"],
+    "tiers": [4, 3],
+    "synergy": "Brann doubles Mycologist's battlecry summon — each Murloc you play summons two random Murlocs instead of one. The board floods in a single shop phase.",
+    "leads_to": "Murlocs - APM"
+  },
+  {
+    "cards": ["Bile Spitter", "Diremuck Forager"],
+    "tribes": ["Murloc"],
+    "tiers": [2, 3],
+    "synergy": "Bile Spitter gives a friendly Murloc Poisonous. Diremuck Forager gives divine shield — protect your poisonous attacker so it survives long enough to one-shot the enemy's best minion.",
+    "leads_to": "Murlocs - Venom Scam"
+  },
+  {
+    "cards": ["Groundbreaker", "Darkcrest Strategist"],
+    "tribes": ["Naga"],
+    "tiers": [2, 3],
+    "synergy": "Groundbreaker gains +2/+2 per spell cast during your turn. Darkcrest Strategist generates and reduces spell costs — more spells per turn means faster scaling.",
+    "leads_to": "Nagas - Groundbreaker"
+  },
+  {
+    "cards": ["Brann Bronzebeard", "Groundbreaker"],
+    "tribes": ["Naga"],
+    "tiers": [4, 2],
+    "synergy": "Brann doubles Groundbreaker's +2/+2 spell buff to +4/+4 per spell. A cheap spell engine with Brann in play can grow Groundbreaker into a 20/20+ threat in a few turns.",
+    "leads_to": "Nagas - Groundbreaker"
+  },
+  {
+    "cards": ["Ruthless Queensguard", "Maelstrom Emergent"],
+    "tribes": ["Naga"],
+    "tiers": [4, 3],
+    "synergy": "Queensguard gains +1 attack each time she attacks. Maelstrom Emergent gives adjacent Nagas +2 attack when they attack — position them together and the scaling compounds every hit.",
+    "leads_to": "Nagas - Combat Scaling"
+  },
+  {
+    "cards": ["Living Azerite", "Leyline Surfacer"],
+    "tribes": ["Elemental"],
+    "tiers": [3, 2],
+    "synergy": "Living Azerite buffs all Elementals in the shop each turn. Leyline Surfacer moves those shop buffs onto your board Elementals — repeat every turn for infinite scaling.",
+    "leads_to": "Elementals - Shop Buff"
+  },
+  {
+    "cards": ["Persistent Poet", "Fire-forged Evoker"],
+    "tribes": ["Dragon"],
+    "tiers": [3, 2],
+    "synergy": "Fire-forged Evoker reduces spell costs, letting you cast more spells per turn. Each spell buffs Persistent Poet and triggers discovers — a self-feeding spell loop.",
+    "leads_to": "Dragons - Spells"
+  },
+  {
+    "cards": ["Ring Bearer", "Persistent Poet"],
+    "tribes": ["Dragon"],
+    "tiers": [4, 3],
+    "synergy": "Ring Bearer gains +2/+2 each time you cast a spell. Persistent Poet generates spells and discovers more — the loop is self-sustaining and Ring Bearer grows exponentially.",
+    "leads_to": "Dragons - Shiny Ring"
+  },
+  {
+    "cards": ["Nightbane, Ignited", "Draconic Warden"],
+    "tribes": ["Dragon"],
+    "tiers": [4, 2],
+    "synergy": "Draconic Warden gains +2/+2 each time you play a battlecry Dragon. Nightbane gains stats from battlecries too — play one Dragon per turn and both scale simultaneously.",
+    "leads_to": "Dragons - Battlecries"
+  },
+  {
+    "cards": ["Sky Admiral Rogers", "Proud Privateer"],
+    "tribes": ["Pirate"],
+    "tiers": [0, 2],
+    "synergy": "Rogers' hero power cycles the shop cheaply, enabling you to play multiple Pirates per turn. Proud Privateer and Brazen Buccaneer accumulate bounty with each Pirate played.",
+    "leads_to": "Pirates - Bounty APM"
+  },
+  {
+    "cards": ["Malchezaar, Prince of Dance", "Ashen Corruptor"],
+    "tribes": ["Demon"],
+    "tiers": [5, 4],
+    "synergy": "Ashen Corruptor rewinds damage so you can cycle cards without taking shop board hits. Pair with Brann to double the cycle value and fuel Twisted Wrathguard fodder generation.",
+    "leads_to": "Demons - Shop Buff"
+  },
+  {
+    "cards": ["Ancestral Automaton", "Kangor's Apprentice"],
+    "tribes": ["Mech"],
+    "tiers": [4, 5],
+    "synergy": "Automaton copies itself on death — a permanent board presence. Kangor's Apprentice resurrects two mechs with divine shield and taunt each time one dies. Your board rebuilds faster than enemies can clear it.",
+    "leads_to": "Mechs - Automaton"
+  },
+  {
+    "cards": ["Cataclysmic Harbinger", "Drakkari Enchanter"],
+    "tribes": ["Neutral"],
+    "tiers": [5, 3],
+    "synergy": "Cataclysmic Harbinger generates Back to Back spells every turn. Drakkari Enchanter doubles end-of-turn effects — more Back to Back charges per turn to scale your premium units.",
+    "leads_to": "Back to Back"
+  },
+  {
+    "cards": ["Cataclysmic Harbinger", "Felfire Conjurer"],
+    "tribes": ["Neutral"],
+    "tiers": [5, 3],
+    "synergy": "Felfire Conjurer scales spell power, making each Back to Back bigger. Cataclysmic Harbinger generates them every turn — combine with Balinda Stonehearth to double the scaling.",
+    "leads_to": "Back to Back"
+  }
+]
